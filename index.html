@@ -49,23 +49,7 @@
                 font-size: 2.5rem;
             }
         }
-        .header-bg {
-            /* --- IMAGE UPDATED HERE --- */
-            background-image: url('header-background.jpg');
-            background-size: cover;
-            background-position: center;
-            position: relative;
-        }
-        .header-overlay {
-            background-color: rgba(13, 71, 161, 0.7);
-            backdrop-filter: blur(5px);
-            -webkit-backdrop-filter: blur(5px);
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-        }
+       
         .modal { display: none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.4); justify-content: center; align-items: center; }
         .modal-content { background-color: white; padding: 2rem; border-radius: 0.75rem; text-align: center; max-width: 90%; width: 400px; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); }
         .modal-success { color: #16a34a; }
@@ -73,25 +57,16 @@
         .section-padding { padding: 4rem 1.5rem; }
 
         /* --- Custom Animation Styles --- */
-        .typing-effect { border-right: .15em solid #4a5568; white-space: pre-wrap; overflow: hidden; animation: blinking 0.75s step-end infinite; }
-        @keyframes blinking { from, to { border-color: transparent } 50% { border-color: #4a5568; } }
-
         .highlight-active { transform: scale(1.03); box-shadow: 0 10px 40px rgba(13, 71, 161, 0.2); transition: transform 0.6s ease-out, box-shadow 0.6s ease-out; }
-        
+       
         .tech-symbol { position: absolute; top: -50px; user-select: none; z-index: 10; font-size: 2rem; color: var(--muted); opacity: 0.7; animation: fall linear; }
         @keyframes fall {
             to { transform: translateY(105vh) rotate(270deg); opacity: 0; }
         }
-
-        .exploding-letter { display: inline-block; animation: bomb-last 1s forwards cubic-bezier(0.175, 0.885, 0.32, 1.275); }
-        @keyframes bomb-last {
-            0% { transform: scale(1) translate(0, 0); opacity: 1; }
-            100% { transform: scale(0) translate(var(--x), var(--y)) rotate(var(--r)); opacity: 0; }
-        }
     </style>
 </head>
 <body class="bg-gray-50 text-gray-800 antialiased">
-    
+   
     <svg style="display:none;">
         <filter id="water-vibrate-filter">
             <feTurbulence type="fractalNoise" baseFrequency="0.01 0.03" numOctaves="1" result="turbulence" seed="0"></feTurbulence>
@@ -107,63 +82,80 @@
         </div>
     </div>
 
-    <header class="header-bg relative text-white py-12 px-6 text-center shadow-lg">
-        <div class="header-overlay"></div>
-        <div class="container relative z-10">
-            <div class="flex items-center justify-between">
-                <div class="flex-1 text-left">
-                    <h1 class="text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight font-['Montserrat']">GopalElectronicsPvt.Ltd</h1>
-                    <p class="mt-2 text-sm sm:text-base text-blue-200">Advanced Electronics & Interdisciplinary Research</p>
-                </div>
-                <button id="mobile-menu-btn" class="text-white focus:outline-none md:hidden p-2 rounded-md">
-                    <svg class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7" /></svg>
-                </button>
+    <header class="bg-slate-900 text-white shadow-lg sticky top-0 z-50">
+        <div class="container mx-auto flex items-center justify-between p-4">
+            <div>
+                <h1 class="text-xl font-bold tracking-tight">GopalElectronicsPvt.Ltd</h1>
+                <p class="text-xs text-slate-400">Advanced Electronics & Research</p>
             </div>
-            <nav class="hidden md:flex justify-center mt-6 space-x-8">
-                <a href="#directors-message" class="text-white hover:text-blue-200 font-semibold transition">Director's Message</a>
-                <a href="#vision-mission" class="text-white hover:text-blue-200 font-semibold transition">Vision & Mission</a>
-                <a href="#services" class="text-white hover:text-blue-200 font-semibold transition">Services</a>
-                <a href="#repair" class="text-white hover:text-blue-200 font-semibold transition">Repair & Maintenance</a>
-                <a href="#research-projects" class="text-white hover:text-blue-200 font-semibold transition">Research Projects</a>
-                <a href="#leadership" class="text-white hover:text-blue-200 font-semibold transition">Leadership</a>
-                <a href="#contact" class="text-white hover:text-blue-200 font-semibold transition">Contact</a>
+            <nav class="hidden md:flex items-center space-x-6">
+                <a href="#" class="text-sm font-medium text-slate-300 hover:text-white transition">Home</a>
+                <a href="#vision-mission" class="text-sm font-medium text-slate-300 hover:text-white transition">About</a>
+                <a href="#services" class="text-sm font-medium text-slate-300 hover:text-white transition">Services</a>
+                <a href="#products" class="text-sm font-medium text-slate-300 hover:text-white transition">Our Products</a>
+                <a href="#repair" class="text-sm font-medium text-slate-300 hover:text-white transition">Repair & Maintenance</a>
+                <a href="#research-projects" class="text-sm font-medium text-slate-300 hover:text-white transition">R&D</a>
+                <a href="#contact" class="text-sm font-medium text-slate-300 hover:text-white transition">Contact Us</a>
             </nav>
+            <button id="mobile-menu-btn" class="text-white focus:outline-none md:hidden p-2 rounded-md">
+                <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7" /></svg>
+            </button>
         </div>
     </header>
 
-    <div id="mobile-menu-overlay" class="fixed inset-0 bg-blue-950 bg-opacity-95 z-50 transform -translate-x-full transition-transform duration-300 md:hidden">
+    <div id="mobile-menu-overlay" class="fixed inset-0 bg-slate-900 bg-opacity-95 z-40 transform -translate-x-full transition-transform duration-300 md:hidden">
         <div class="flex justify-end p-6">
             <button id="close-menu-btn" class="text-white focus:outline-none p-2 rounded-md">
                 <svg class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" /></svg>
             </button>
         </div>
-        <nav class="flex flex-col items-center space-y-6 pt-12">
-            <a href="#directors-message" class="text-white text-2xl font-semibold hover:text-blue-200 transition" onclick="closeMobileMenu()">Director's Message</a>
-            <a href="#vision-mission" class="text-white text-2xl font-semibold hover:text-blue-200 transition" onclick="closeMobileMenu()">Vision & Mission</a>
-            <a href="#services" class="text-white text-2xl font-semibold hover:text-blue-200 transition" onclick="closeMobileMenu()">Services</a>
-            <a href="#repair" class="text-white text-2xl font-semibold hover:text-blue-200 transition" onclick="closeMobileMenu()">Repair & Maintenance</a>
-            <a href="#research-projects" class="text-white text-2xl font-semibold hover:text-blue-200 transition" onclick="closeMobileMenu()">Research Projects</a>
-            <a href="#leadership" class="text-white text-2xl font-semibold hover:text-blue-200 transition" onclick="closeMobileMenu()">Leadership</a>
-            <a href="#contact" class="text-white text-2xl font-semibold hover:text-blue-200 transition" onclick="closeMobileMenu()">Contact</a>
+        <nav class="flex flex-col items-center space-y-8 pt-12">
+            <a href="#" class="text-white text-2xl font-semibold hover:text-blue-300 transition" onclick="closeMobileMenu()">Home</a>
+            <a href="#vision-mission" class="text-white text-2xl font-semibold hover:text-blue-300 transition" onclick="closeMobileMenu()">About</a>
+            <a href="#services" class="text-white text-2xl font-semibold hover:text-blue-300 transition" onclick="closeMobileMenu()">Services</a>
+            <a href="#products" class="text-white text-2xl font-semibold hover:text-blue-300 transition" onclick="closeMobileMenu()">Our Products</a>
+            <a href="#repair" class="text-white text-2xl font-semibold hover:text-blue-300 transition" onclick="closeMobileMenu()">Repair & Maintenance</a>
+            <a href="#research-projects" class="text-white text-2xl font-semibold hover:text-blue-300 transition" onclick="closeMobileMenu()">R&D</a>
+            <a href="#contact" class="text-white text-2xl font-semibold hover:text-blue-300 transition" onclick="closeMobileMenu()">Contact Us</a>
         </nav>
     </div>
 
-    <main class="py-12">
-        <section class="container relative overflow-hidden" id="welcome-section">
-            <h2 class="text-3xl font-bold tracking-tight sm:text-4xl text-center text-gray-900" style="border: none;">Welcome to GopalElectronics</h2>
-            <p class="mt-4 text-lg text-gray-700 text-center max-w-4xl mx-auto">Innovating today for a smarter, more sustainable tomorrow. We are dedicated to pioneering advancements in technology and research that shape the future of industries and improve lives globally.</p>
+    <main>
+        <section id="welcome-section" class="relative bg-cover bg-center py-24" style="background-image: url('header-background.jpg');">
+            <div class="absolute inset-0 bg-slate-800 bg-opacity-60"></div>
+            <div class="container mx-auto relative z-10 text-center text-white">
+                <h2 class="text-4xl font-bold tracking-tight sm:text-5xl text-white" style="border: none;">Welcome to GopalElectronics</h2>
+                <p class="mt-4 text-lg text-slate-200 max-w-4xl mx-auto">Innovating today for a smarter, more sustainable tomorrow. We are dedicated to pioneering advancements in technology and research that shape the future of industries and improve lives globally.</p>
+            </div>
         </section>
-        
-        <section class="container" id="directors-message">
-             <div class="mt-12 p-8 bg-white rounded-2xl shadow-xl border border-gray-100 max-w-4xl mx-auto">
-                 <h3 class="text-2xl font-semibold text-blue-800 mb-4">Director's Message</h3>
-                 <p id="director-message-text"
-                    class="text-lg text-gray-600 italic leading-relaxed mb-6"
-                    data-text="At GopalElectronics, our vision is to pioneer advanced electronics and interdisciplinary research that empowers industries, transforms lives, and promotes sustainable development. As the Director, I am proud to lead a team of talented engineers, researchers, and innovators who are passionate about creating solutions that bridge technology and real-world challenges. From IoT, VLSI, and embedded systems to power electronics, renewable energy, and AI integration, we strive for excellence in every project we undertake. Our mission goes beyond developing products – we aim to foster a culture of collaboration, continuous learning, and innovation. Through our R&D initiatives, prototyping services, and repair & maintenance capabilities, we support our clients and partners in achieving their goals efficiently and reliably. At GopalElectronics, integrity, quality, and sustainability are the cornerstones of our work. We are committed to building technologies that not only meet today’s demands but also anticipate the needs of tomorrow. I invite you to explore our services, collaborate with us, and join us on this journey of innovation and technological excellence."></p>
-                 <div class="text-right mt-6 pt-6 border-t border-gray-200">
-                     <p class="font-bold text-gray-800">[Anand Raj]</p>
-                     <p class="text-sm text-gray-500">director of GopalElectronics</p>
-                 </div>
+       
+        <section class="container mt-12" id="directors-message">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                <div class="p-8 bg-white rounded-2xl shadow-xl border border-gray-100">
+                    <h3 class="text-2xl font-semibold text-blue-800 mb-4">Director's Message</h3>
+                    <p class="text-lg text-gray-600 italic leading-relaxed mb-6">At GopalElectronics, our vision is to pioneer advanced electronics and interdisciplinary research that empowers industries, transforms lives, and promotes sustainable development. As the Director, I am proud to lead a team of talented engineers, researchers, and innovators who are passionate about creating solutions that bridge technology and real-world challenges. From IoT, VLSI, and embedded systems to power electronics, renewable energy, and AI integration, we strive for excellence in every project we undertake. Our mission goes beyond developing products – we aim to foster a culture of collaboration, continuous learning, and innovation. Through our R&D initiatives, prototyping services, and repair & maintenance capabilities, we support our clients and partners in achieving their goals efficiently and reliably. At GopalElectronics, integrity, quality, and sustainability are the cornerstones of our work. We are committed to building technologies that not only meet today’s demands but also anticipate the needs of tomorrow. I invite you to explore our services, collaborate with us, and join us on this journey of innovation and technological excellence.</p>
+                    <div class="text-right mt-6 pt-6 border-t border-gray-200">
+                         <p class="font-bold text-gray-800">Anand Raj</p>
+                         <p class="text-sm text-gray-500">Director of GopalElectronics</p>
+                    </div>
+                </div>
+                <div class="p-8 bg-white rounded-2xl shadow-xl border border-gray-100">
+                    <h3 class="text-2xl font-semibold text-blue-800 mb-4">Notice Board</h3>
+                    <ul class="space-y-4">
+                        <li class="border-b pb-2">
+                            <p class="text-sm text-gray-500">October 03, 2025</p>
+                            <p class="text-gray-700 font-medium">New R&D project on high-efficiency inverters has commenced.</p>
+                        </li>
+                        <li class="border-b pb-2">
+                            <p class="text-sm text-gray-500">September 25, 2025</p>
+                            <p class="text-gray-700 font-medium">Quarterly performance review meeting scheduled for all teams.</p>
+                        </li>
+                         <li class="pb-2">
+                            <p class="text-sm text-gray-500">September 20, 2025</p>
+                            <p class="text-gray-700 font-medium">Successful deployment of our new IoT solution at a client site.</p>
+                        </li>
+                    </ul>
+                </div>
             </div>
         </section>
 
@@ -195,31 +187,90 @@
                 <div class="p-6 bg-blue-50 rounded-2xl shadow-md border border-gray-100 flex items-center justify-center text-center font-semibold text-blue-800">AI & Machine Learning Integration</div>
                 <div class="p-6 bg-blue-50 rounded-2xl shadow-md border border-gray-100 flex items-center justify-center text-center font-semibold text-blue-800">Renewable Energy Solutions</div>
                 <div class="p-6 bg-blue-50 rounded-2xl shadow-md border border-gray-100 flex items-center justify-center text-center font-semibold text-blue-800">VLSI & FPGA Design Services</div>
+                <div class="p-6 bg-blue-50 rounded-2xl shadow-md border border-gray-100 flex items-center justify-center text-center font-semibold text-blue-800">Semiconductor Technologies</div>
+                <div class="p-6 bg-blue-50 rounded-2xl shadow-md border border-gray-100 flex items-center justify-center text-center font-semibold text-blue-800">Agricultural Machinery</div>
             </div>
         </section>
 
-        <section id="repair" class="bg-white section-padding mt-16">
-            <div class="container mx-auto max-w-4xl">
-                <div class="text-center mb-8">
-                    <h2 class="text-3xl md:text-4xl font-extrabold text-blue-800 mb-4 uppercase tracking-wider" style="border: none;">Repair & Maintenance Facility</h2>
-                    <p class="text-lg leading-relaxed text-gray-700 uppercase max-w-3xl mx-auto">We provide reliable repair and maintenance for a wide range of equipment, ensuring longevity, efficiency, and cost-effectiveness. Our facility is equipped for diagnostics, logic-level repairs, testing, and quality assurance to extend the lifecycle of your products and systems.</p>
+        <section id="products" class="py-16 bg-blue-50 mt-16">
+            <div class="container mx-auto">
+                <div class="text-center mb-12">
+                    <h2 class="text-3xl font-bold tracking-tight text-blue-900 sm:text-4xl" style="border: none; margin-bottom: 0.5rem;">Our Products</h2>
+                    <div class="w-24 h-1 bg-blue-500 mx-auto"></div>
                 </div>
-                <div class="bg-gray-50 p-8 rounded-2xl shadow-lg mt-12">
-                    <h3 id="scope-heading" class="text-2xl md:text-3xl font-bold text-blue-700 mb-6 uppercase text-center">Scope of Services</h3>
-                    <ul class="space-y-4 text-lg text-gray-800 uppercase">
-                        <li class="p-4 bg-white rounded-lg shadow-md transition-transform transform hover:scale-105"><strong class="font-semibold text-blue-900 block mb-1">CONSUMER APPLIANCES:</strong><span>Refrigerator, Air Conditioner, Washing Machine, Television, RO Filters</span></li>
-                        <li class="p-4 bg-white rounded-lg shadow-md transition-transform transform hover:scale-105"><strong class="font-semibold text-blue-900 block mb-1">IT & SECURITY SYSTEMS:</strong><span>Computers, Laptops, CCTV Systems</span></li>
-                        <li class="p-4 bg-white rounded-lg shadow-md transition-transform transform hover:scale-105"><strong class="font-semibold text-blue-900 block mb-1">POWER BACKUP SYSTEMS:</strong><span>Inverters, UPS Units</span></li>
-                        <li class="p-4 bg-white rounded-lg shadow-md transition-transform transform hover:scale-105"><strong class="font-semibold text-blue-900 block mb-1">INDUSTRIAL EQUIPMENT:</strong><span>3-Phase Motors, Induction Motors, VFDs, PLCs</span></li>
-                        <li class="p-4 bg-white rounded-lg shadow-md transition-transform transform hover:scale-105"><strong class="font-semibold text-blue-900 block mb-1">ELECTRICAL INFRASTRUCTURE:</strong><span>3-Phase Wiring, Panel Boards, Star Delta & Hybrid Motor Starters</span></li>
-                    </ul>
+                <p class="text-center max-w-3xl mx-auto mb-12 text-gray-600">We supply a comprehensive range of high-quality electrical components and systems to meet the demands of industrial, commercial, and residential projects.</p>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <div class="bg-white p-6 rounded-2xl shadow-lg border border-gray-200 border-t-4 border-blue-500 transition hover:-translate-y-2 hover:shadow-xl">
+                        <div class="flex items-center space-x-4">
+                            <div class="bg-blue-100 p-3 rounded-full"><svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z" /></svg></div>
+                            <h3 class="text-xl font-bold text-blue-800">Transformers</h3>
+                        </div>
+                        <p class="text-gray-700 mt-4">Power, Distribution, Single & Three-Phase, Step-up & Step-down, Current Transformers, Instrument Transformers, Isolation, Autotransformers, Audio Transformers, etc.</p>
+                    </div>
+                    <div class="bg-white p-6 rounded-2xl shadow-lg border border-gray-200 border-t-4 border-blue-500 transition hover:-translate-y-2 hover:shadow-xl">
+                        <div class="flex items-center space-x-4">
+                            <div class="bg-blue-100 p-3 rounded-full"><svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 3v2m6-2v2M9 19v2m6-2v2M5 9H3m2 6H3m18-6h-2m2 6h-2M12 6V3m0 18v-3" /></svg></div>
+                            <h3 class="text-xl font-bold text-blue-800">Power Conversion & Control</h3>
+                        </div>
+                        <p class="text-gray-700 mt-4">Voltage Converters, Motor Drivers, and Single & Three-Phase Magnetic Contactors,Voltage-Stabilizer.</p>
+                    </div>
+                    <div class="bg-white p-6 rounded-2xl shadow-lg border border-gray-200 border-t-4 border-blue-500 transition hover:-translate-y-2 hover:shadow-xl">
+                        <div class="flex items-center space-x-4">
+                            <div class="bg-blue-100 p-3 rounded-full"><svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4h4" /></svg></div>
+                            <h3 class="text-xl font-bold text-blue-800">Specialized Equipment</h3>
+                        </div>
+                        <p class="text-gray-700 mt-4">Welding Machines, Custom-build Lead Acid Batteries, and Constant-Current Battery Chargers For Industrial & Automobiles.</p>
+                    </div>
+                    <div class="bg-white p-6 rounded-2xl shadow-lg border border-gray-200 border-t-4 border-blue-500 transition hover:-translate-y-2 hover:shadow-xl">
+                        <div class="flex items-center space-x-4">
+                            <div class="bg-blue-100 p-3 rounded-full"><svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z" /></svg></div>
+                            <h3 class="text-xl font-bold text-blue-800">Electrical Infrastructure</h3>
+                        </div>
+                        <p class="text-gray-700 mt-4">HT Breakers, LT Panels, Distribution Boards (MCBs), Cable Trays/Raceways, Lightning Protection, and Earthing Materials.Etc </p>
+                    </div>
                 </div>
             </div>
         </section>
-        
+
+        <section id="repair" class="section-padding bg-white">
+            <div class="container mx-auto">
+                <div class="text-center mb-12">
+                    <h2 class="text-3xl md:text-4xl font-extrabold text-blue-800 mb-4" style="border: none;">Repair & Maintenance</h2>
+                    <p class="text-lg leading-relaxed text-gray-700 max-w-3xl mx-auto">We provide reliable repair and maintenance for a wide range of equipment, ensuring longevity, efficiency, and cost-effectiveness.</p>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <div class="bg-gray-50 p-6 rounded-xl shadow-md border border-gray-200">
+                        <h3 class="font-bold text-lg text-blue-900 mb-2">CONSUMER APPLIANCES</h3>
+                        <p class="text-gray-600">Refrigerator, Air Conditioner, Washing Machine, Television, RO Filters.</p>
+                    </div>
+                    <div class="bg-gray-50 p-6 rounded-xl shadow-md border border-gray-200">
+                        <h3 class="font-bold text-lg text-blue-900 mb-2">IT & SECURITY SYSTEMS</h3>
+                        <p class="text-gray-600"> Computers, Laptops, CCTV Systems.</p>
+                    </div>
+                    <div class="bg-gray-50 p-6 rounded-xl shadow-md border border-gray-200">
+                        <h3 class="font-bold text-lg text-blue-900 mb-2">POWER BACKUP SYSTEMS</h3>
+                        <p class="text-gray-600">Inverters, UPS Units.</p>
+                    </div>
+                    <div class="bg-gray-50 p-6 rounded-xl shadow-md border border-gray-200">
+                        <h3 class="font-bold text-lg text-blue-900 mb-2">INDUSTRIAL EQUIPMENT</h3>
+                        <p class="text-gray-600">Sound-Attenuated Generator, Induction Motors, VFDs, PLCs,Etc</p>
+                    </div>
+                    <div class="bg-gray-50 p-6 rounded-xl shadow-md border border-gray-200">
+                        <h3 class="font-bold text-lg text-blue-900 mb-2">ELECTRICAL INFRASTRUCTURE</h3>
+                        <p class="text-gray-600">3-Phase Wiring, Panel Boards, Star Delta & Hybrid Motor Starters.</p>
+                    </div>
+                     <div class="bg-gray-50 p-6 rounded-xl shadow-md border border-gray-200">
+                        <h3 class="font-bold text-lg text-blue-900 mb-2">AUDIO SOLUTIONS</h3>
+                        <p class="text-gray-600">Professional Amplifiers, Audio Mixers.</p>
+                    </div>
+                </div>
+                 <p class="text-center text-gray-600 mt-8 italic">Our facility is equipped for diagnostics, logic-level repairs, testing, and quality assurance.</p>
+            </div>
+        </section>
+       
         <section class="container mt-16" id="research-projects">
             <h2 class="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">Active Research Projects</h2>
-             <p class="text-center max-w-3xl mx-auto mb-8 text-gray-600">Ongoing cutting-edge research and development work at InsuGate.</p>
+             <p class="text-center max-w-3xl mx-auto mb-8 text-gray-600">Ongoing cutting-edge research and development work at Gopal Electronics.</p>
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-8 mt-8">
                 <article class="research-card bg-white rounded-2xl shadow-xl p-6 border border-gray-100"><span class="inline-block px-4 py-1 rounded-full text-sm font-bold text-teal-600 bg-teal-100">AI & Healthcare</span><h3 class="text-2xl font-bold text-gray-900 mt-4 mb-2">AI-enabled Non-Contact ECG using Radar Technology</h3><p class="text-gray-600 text-sm">Research and prototyping of contactless ECG sensing using radar (Doppler/mmWave) plus AI signal processing for beat detection, artifact removal, and arrhythmia screening.</p><ul class="list-disc list-inside mt-4 text-sm text-gray-500 space-y-2"><li>Radar front-end: FMCW / MIMO mmWave options</li><li>Signal processing: clutter removal, adaptive filtering</li><li>AI: deep learning models for ECG waveform extraction & classification</li></ul></article>
                 <article class="research-card bg-white rounded-2xl shadow-xl p-6 border border-gray-100"><span class="inline-block px-4 py-1 rounded-full text-sm font-bold text-fuchsia-600 bg-fuchsia-100">Assistive Tech</span><h3 class="text-2xl font-bold text-gray-900 mt-4 mb-2">Smart Wheelchair</h3><p class="text-gray-600 text-sm">Integrated smart wheelchair platform supporting mobile app control, voice/audio commands, gyroscope-based stabilization, joystick fallback, and AI-driven assistance.</p><ul class="list-disc list-inside mt-4 text-sm text-gray-500 space-y-2"><li>Controls: Mobile app (BLE/Wi‑Fi), Joystick, Voice</li><li>Sensors: Gyroscope, IMU, obstacle detection</li><li>AI: path-planning, user intent recognition, safety overrides</li></ul></article>
@@ -228,24 +279,24 @@
             </div>
         </section>
 
-        <section class="container mt-16" id="leadership">
-            <h2 class="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">Our Leadership Team</h2>
-            <p class="text-center text-gray-600 max-w-3xl mx-auto">Meet the visionary leaders driving innovation and excellence at GopalElectronicsPvt.Ltd. Our team is composed of passionate experts dedicated to pushing the boundaries of technology and creating a sustainable future.</p>
+        <section class="container mt-16" id="engineers">
+            <h2 class="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">Our Engineers</h2>
+            <p class="text-center text-gray-600 max-w-3xl mx-auto">Meet the skilled engineers driving innovation and excellence at GopalElectronicsPvt.Ltd. Our team is composed of passionate experts dedicated to pushing the boundaries of technology.</p>
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mt-8">
-                <div class="card bg-white rounded-2xl shadow-xl p-6 flex flex-col sm:flex-row items-center space-y-4 sm:space-y-0 sm:space-x-4"><img src="founder.jpg" alt="Loknath Das" class="rounded-full object-cover w-20 h-20 border-4 border-blue-500"><div class="text-center sm:text-left"><h3 class="text-lg font-bold text-gray-900">Mr. Loknath Das</h3><p class="text-sm italic text-gray-500">Founder</p><p class="text-sm text-gray-600 mt-2">B.Tech in ECE, AUS</p><p class="text-xs text-gray-500"><strong>Research:</strong> VLSI, IoT, Embedded Systems, Antenna Design</p></div></div>
+                <div class="card bg-white rounded-2xl shadow-xl p-6 flex flex-col sm:flex-row items-center space-y-4 sm:space-y-0 sm:space-x-4"><img src="founder.jpg" alt="Loknath Das" class="rounded-full object-cover w-20 h-20 border-4 border-blue-500"><div class="text-center sm:text-left"><h3 class="text-lg font-bold text-gray-900">Mr. Loknath Das</h3><p class="text-xs font-semibold text-blue-600">GATE 2025 Qualified</p><p class="text-sm italic text-gray-500 mt-1">Founder</p><p class="text-sm text-gray-600 mt-2">B.Tech in ECE, AUS</p><p class="text-xs text-gray-500"><strong>Research:</strong> VLSI, IoT, Embedded Systems, Antenna Design</p></div></div>
                 <div class="card bg-white rounded-2xl shadow-xl p-6 flex flex-col sm:flex-row items-center space-y-4 sm:space-y-0 sm:space-x-4"><img src="rajeev.jpg" alt="Rajeev Ranjan" class="rounded-full object-cover w-20 h-20 border-4 border-blue-500"><div class="text-center sm:text-left"><h3 class="text-lg font-bold text-gray-900">Mr. Rajeev Ranjan</h3><p class="text-sm italic text-gray-500">Co-Founder</p><p class="text-sm text-gray-600 mt-2">B.Tech in CSE, AUS</p><p class="text-xs text-gray-500"><strong>Research:</strong> Software Engineering</p></div></div>
-                <div class="card bg-white rounded-2xl shadow-xl p-6 flex flex-col sm:flex-row items-center space-y-4 sm:space-y-0 sm:space-x-4"><img src="praveen.jpg" alt="Praveen Singh" class="rounded-full object-cover w-20 h-20 border-4 border-blue-500"><div class="text-center sm:text-left"><h3 class="text-lg font-bold text-gray-900">Mr. Praveen Singh</h3><p class="text-sm italic text-gray-500">Chief Executive Officer (CEO)</p><p class="text-sm text-gray-600 mt-2">B.Tech in ECE, AUS</p><p class="text-xs text-gray-500"><strong>Research:</strong> AI, Machine Learning, Image Processing</p></div></div>
+                <div class="card bg-white rounded-2xl shadow-xl p-6 flex flex-col sm:flex-row items-center space-y-4 sm:space-y-0 sm:space-x-4"><img src="praveen.jpg" alt="Praveen Singh" class="rounded-full object-cover w-20 h-20 border-4 border-blue-500"><div class="text-center sm:text-left"><h3 class="text-lg font-bold text-gray-900">Mr. Praveen Singh</h3><p class="text-xs font-semibold text-blue-600">GATE 2025 Qualified</p><p class="text-sm italic text-gray-500 mt-1">Chief Executive Officer (CEO)</p><p class="text-sm text-gray-600 mt-2">B.Tech in ECE, AUS</p><p class="text-xs text-gray-500"><strong>Research:</strong> AI, Machine Learning, Image Processing</p></div></div>
                 <div class="card bg-white rounded-2xl shadow-xl p-6 flex flex-col sm:flex-row items-center space-y-4 sm:space-y-0 sm:space-x-4"><img src="anand.jpg" alt="Anand Raj" class="rounded-full object-cover w-20 h-20 border-4 border-blue-500"><div class="text-center sm:text-left"><h3 class="text-lg font-bold text-gray-900">Mr. Anand raj</h3><p class="text-sm italic text-gray-500">Director</p><p class="text-sm text-gray-600 mt-2">B.Tech in CSE, AUS</p><p class="text-xs text-gray-500"><strong>Research:</strong> ML, Deep Learning, Computer Vision</p></div></div>
-                <div class="card bg-white rounded-2xl shadow-xl p-6 flex flex-col sm:flex-row items-center space-y-4 sm:space-y-0 sm:space-x-4"><img src="biptu.jpg" alt="Biptu Dhar" class="rounded-full object-cover w-20 h-20 border-4 border-blue-500"><div class="text-center sm:text-left"><h3 class="text-lg font-bold text-gray-900">Mr. Biptu Dhar</h3><p class="text-sm italic text-gray-500">Core Team</p><p class="text-sm text-gray-600 mt-2">B.Tech in ETE, BVEC, Assam</p><p class="text-xs text-gray-500"><strong>Research:</strong> Power Electronics, Power Systems</p></div></div>
+                <div class="card bg-white rounded-2xl shadow-xl p-6 flex flex-col sm:flex-row items-center space-y-4 sm:space-y-0 sm:space-x-4"><img src="biptu.jpg" alt="Biptu Dhar" class="rounded-full object-cover w-20 h-20 border-4 border-blue-500"><div class="text-center sm:text-left"><h3 class="text-lg font-bold text-gray-900">Mr. Biptu Dhar</h3><p class="text-sm italic text-gray-500">Core Team</p><p class="text-sm text-gray-600 mt-2">B.Tech in ETE, BVEC, Assam</p><p class="text-xs text-gray-500"><strong>Research:</strong> Power Electronics, Power Systems, Autocad</p></div></div>
                 <div class="card bg-white rounded-2xl shadow-xl p-6 flex flex-col sm:flex-row items-center space-y-4 sm:space-y-0 sm:space-x-4"><img src="kishore.jpg" alt="Kishore Namasudra" class="rounded-full object-cover w-20 h-20 border-4 border-blue-500"><div class="text-center sm:text-left"><h3 class="text-lg font-bold text-gray-900">Mr. Kishore Namasudra</h3><p class="text-sm italic text-gray-500">Core Team</p><p class="text-sm text-gray-600 mt-2">Diploma in Mechanical Engineering</p><p class="text-xs text-gray-500"><strong>Research:</strong> Electrical Machines</p></div></div>
-                <div class="card bg-white rounded-2xl shadow-xl p-6 flex flex-col sm:flex-row items-center space-y-4 sm:space-y-0 sm:space-x-4"><img src="ashish.jpg" alt="Ashish Kumar Das" class="rounded-full object-cover w-20 h-20 border-4 border-blue-500"><div class="text-center sm:text-left"><h3 class="text-lg font-bold text-gray-900">Mr. Ashish Kumar Das</h3><p class="text-sm italic text-gray-500">Core Team</p><p class="text-sm text-gray-600 mt-2">B.Sc. (Hons.) in Mathematics</p><p class="text-xs text-gray-500"><strong>Research:</strong> Software Engineering</p></div></div>
+                <div class="card bg-white rounded-2xl shadow-xl p-6 flex flex-col sm:flex-row items-center space-y-4 sm:space-y-0 sm:space-x-4"><img src="ashish.jpg" alt="Ashish Kumar Das" class="rounded-full object-cover w-20 h-20 border-4 border-blue-500"><div class="text-center sm:text-left"><h3 class="text-lg font-bold text-gray-900">Mr. Ashish Kumar Das</h3><p class="text-sm italic text-gray-500">Core Team</p<p class="text-sm text-gray-600 mt-2">B.Sc. (Hons.) in Mathematics</p><p class="text-xs text-gray-500"><strong>Research:</strong> Software Engineering</p></div></div>
             </div>
         </section>
 
         <section class="container mt-16" id="contact">
             <h2 class="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">Contact Us</h2>
             <div class="flex flex-col md:flex-row gap-8 mt-8">
-                <div class="bg-blue-950 text-white p-8 rounded-2xl shadow-lg w-full md:max-w-sm"><h3 class="text-2xl font-bold mb-6 text-white">Contact Details</h3><div class="space-y-6"><div class="flex items-start space-x-4"><div class="bg-blue-700 p-3 rounded-full flex-shrink-0"><svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" /></svg></div><div><p class="text-gray-400 text-sm">Email</p><p class="mt-1 font-semibold text-sm break-words">gdas46613@gmail.com</p></div></div><div class="flex items-start space-x-4"><div class="bg-blue-700 p-3 rounded-full flex-shrink-0"><svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" /></svg></div><div><p class="text-gray-400 text-sm">Phone</p><p class="mt-1 font-semibold text-sm">+91 6002129253</p></div></div></div><div class="mt-8 pt-8 border-t border-gray-700"><h3 class="text-2xl font-bold mb-4">Office Address</h3><p class="mb-4 text-gray-300 text-sm leading-relaxed"><strong>R&D Center</strong><br>Gopal Electronics Pvt.Ltd.,<br>barjalenga grant,barjalenga <br>Dist. Cachar, Assam 788117<br><a href="https://maps.app.goo.gl/U17WW7PfqGj4BEgo8" target="_blank" class="text-blue-400 hover:underline">View on Google Maps</a></p><p class="text-gray-300 text-sm leading-relaxed"><strong>Registered Office</strong><br>Borjalenga mahabirchara road, MP9M+VJ5<br>Bor Jalenga Grant, Dist Cachar, 788117<br><a href="https://maps.google.com/?cid=11163845142699000980&g_mp=Cidnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaFRleHQ" target="_blank" class="text-blue-400 hover:underline">View on Google Maps</a></p></div></div>
+                <div class="bg-blue-950 text-white p-8 rounded-2xl shadow-lg w-full md:max-w-sm"><h3 class="text-2xl font-bold mb-6 text-white">Contact Details</h3><div class="space-y-6"><div class="flex items-start space-x-4"><div class="bg-blue-700 p-3 rounded-full flex-shrink-0"><svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" /></svg></div><div><p class="text-gray-400 text-sm">Email</p><p class="mt-1 font-semibold text-sm break-words">gopalelectronicslabs@gmail.com</p></div></div><div class="flex items-start space-x-4"><div class="bg-blue-700 p-3 rounded-full flex-shrink-0"><svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" /></svg></div><div><p class="text-gray-400 text-sm">Phone</p><p class="mt-1 font-semibold text-sm">+91 6002129253</p></div></div></div><div class="mt-8 pt-8 border-t border-gray-700"><h3 class="text-2xl font-bold mb-4">Office Address</h3><p class="mb-4 text-gray-300 text-sm leading-relaxed"><strong>R&D Center</strong><br>Gopal Electronics Pvt.Ltd.,<br>barjalenga grant,barjalenga <br>Dist. Cachar, Assam 788117<br><a href="https://maps.app.goo.gl/U17WW7PfqGj4BEgo8" target="_blank" class="text-blue-400 hover:underline">View on Google Maps</a></p><p class="text-gray-300 text-sm leading-relaxed"><strong>Registered Office</strong><br>Borjalenga mahabirchara road, MP9M+VJ5<br>Bor Jalenga Grant, Dist Cachar, 788117<br><a href="https://maps.google.com/?cid=11163845142699000980&g_mp=Cidnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaFRleHQ" target="_blank" class="text-blue-400 hover:underline">View on Google Maps</a></p></div></div>
                 <div id="message-us" class="contact-form p-8 bg-white rounded-2xl shadow-lg w-full">
                     <h3 class="text-2xl font-bold text-gray-900 mb-6">Send us a message</h3>
                     <form id="contact-form">
@@ -295,12 +346,12 @@
         modal.style.display = 'flex';
     }
     function closeModal() { document.getElementById('message-modal').style.display = 'none'; }
-    
+   
     const mobileMenuBtn = document.getElementById('mobile-menu-btn'); const closeMenuBtn = document.getElementById('close-menu-btn'); const mobileMenuOverlay = document.getElementById('mobile-menu-overlay');
     mobileMenuBtn.addEventListener('click', () => { mobileMenuOverlay.classList.remove('-translate-x-full'); });
     closeMenuBtn.addEventListener('click', () => { mobileMenuOverlay.classList.add('-translate-x-full'); });
     function closeMobileMenu() { mobileMenuOverlay.classList.add('-translate-x-full'); }
-    
+   
     // --- Page Load Initializations and Effects ---
     document.addEventListener('DOMContentLoaded', () => {
         generateCaptcha();
@@ -320,16 +371,9 @@
                 generateCaptcha();
                 return;
             }
-            
-            // 
-            // =========================================================================
-            // YOUR UNIQUE URL IS NOW PASTED HERE
-            // =========================================================================
-            //
+           
             const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyd_P906GzHqGqK28RUo0dR7KtDE7BSApeI6KF1zs1HSgObed8q65SaBkA7Zn-cFyZf/exec';
-            //
-            // =========================================================================
-            
+           
             if (SCRIPT_URL === 'PASTE_YOUR_GOOGLE_SCRIPT_URL_HERE') {
                 showModal('Form is not configured. Please paste the script URL.', false);
                 return;
@@ -365,20 +409,8 @@
                 submitButton.innerHTML = `Send Message <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 ml-2" viewBox="0 0 20 20" fill="currentColor"><path d="M10.894 2.553a1 1 0 00-1.788 0l-7 14a1 1 0 001.342 1.342L10 15.464l5.564 2.93a1 1 0 001.342-1.342l-7-14z" /></svg>`;
             });
         });
-        
-        // --- Effects (Typewriter, Highlight, etc.) ---
-        const directorMessageEl = document.getElementById('director-message-text');
-        const handleTypewriter = (el) => {
-            const textToType = el.getAttribute('data-text'); let index = 0; const typingSpeed = 30;
-            el.textContent = ''; el.classList.add('typing-effect');
-            function typeWriter() {
-                if (index < textToType.length) { el.textContent += textToType.charAt(index); index++; setTimeout(typeWriter, typingSpeed); } 
-                else { el.classList.remove('typing-effect'); }
-            }
-            typeWriter();
-        };
-        createObserver(handleTypewriter).observe(directorMessageEl);
-
+       
+        // --- Effects ---
         const visionMissionCard = document.getElementById('vision-mission-card');
         const handleHighlight = (el) => el.classList.add('highlight-active');
         createObserver(handleHighlight).observe(visionMissionCard);
@@ -386,19 +418,7 @@
         const welcomeSection = document.getElementById('welcome-section');
         const handleTechSymbols = (el) => {
             const symbols = [
- '∫', 'Σ', 'π', '√', 'E=mc²', 'a²+b²', '∞', 'Δ', 'μ', '∑ F=ma',
- 'x(t)', 'x[n]', 'δ(t)', 'u(t)', 'e^(jωt)', 'H(jω)', '|H(f)|', '∠θ',
- 'V=IR', 'I=C dV/dt', 'V=L di/dt', 'f_c = 1/(2πRC)', 'β', 'gm', 'V_BE', 'Ic = β Ib',
- '0', '1', '⊕', '·', '+', '¬', 'CLK', 'FF', 'Qn+1 = D', 'MUX',
- '↑', '↓', '⎍', 'T', 'f = 1/T', 'PWM', 'D = Ton/T', 'Ton', 'Toff',
- // Computer Networks
- 'IP', 'TCP', 'UDP', 'OSI', 'LAN', 'WAN', 'MAN', 'Pkt', 'ACK', 'NAK', '↔', '∥', '⟲',
- // Microprocessor 8085
- 'PC', 'SP', 'HL', 'DE', 'BC', 'A', 'IN', 'OUT', 'NOP', 'HLT', 'CALL', 'RET', 'RST', 'MOV', 'ADD', 'SUB', 'ANA',
- // Chemistry
- 'H₂O', 'CO₂', 'NaCl', 'HCl', 'CH₄', 'C₆H₁₂O₆', 'Δ', 'pH', '→', '⇌', '↑', '↓',
- // Electronic Devices
- '|>|', 'Zener', 'LED', 'PN', 'Id = Is(e^(Vd/ηVT) - 1)', 'BJT', 'FET', 'MOSFET', 'Vth', 'gm = ΔId/ΔVgs', 'rπ', 'λ'];
+ '∫', 'Σ', 'π', '√', 'E=mc²', 'a²+b²', '∞', 'Δ', 'μ', '∑ F=ma', 'x(t)', 'x[n]', 'δ(t)', 'u(t)', 'e^(jωt)', 'H(jω)', '|H(f)|', '∠θ', 'V=IR', 'I=C dV/dt', 'V=L di/dt', 'f_c = 1/(2πRC)', 'β', 'gm', 'V_BE', 'Ic = β Ib', '0', '1', '⊕', '·', '+', '¬', 'CLK', 'FF', 'Qn+1 = D', 'MUX', '↑', '↓', '⎍', 'T', 'f = 1/T', 'PWM', 'D = Ton/T', 'Ton', 'Toff', 'IP', 'TCP', 'UDP', 'OSI', 'LAN', 'WAN', 'MAN', 'Pkt', 'ACK', 'NAK', '↔', '∥', '⟲', 'PC', 'SP', 'HL', 'DE', 'BC', 'A', 'IN', 'OUT', 'NOP', 'HLT', 'CALL', 'RET', 'RST', 'MOV', 'ADD', 'SUB', 'ANA', 'H₂O', 'CO₂', 'NaCl', 'HCl', 'CH₄', 'C₆H₁₂O₆', 'Δ', 'pH', '→', '⇌', '↑', '↓', 'Zener', 'LED', 'PN', 'Id = Is(e^(Vd/ηVT) - 1)', 'BJT', 'FET', 'MOSFET', 'Vth', 'gm = ΔId/ΔVgs', 'rπ', 'λ'];
             const symbolInterval = setInterval(() => {
                 const symbol = document.createElement('div');
                 symbol.classList.add('tech-symbol');
@@ -426,22 +446,6 @@
             animateTurbulence();
         };
         createObserver(handleWaterEffect).observe(servicesHeading);
-
-        const scopeHeading = document.getElementById('scope-heading');
-        const handleBombEffect = (el) => {
-            const text = el.textContent; el.textContent = '';
-            text.split('').forEach(char => {
-                if (char.trim() === '') return;
-                const span = document.createElement('span');
-                span.textContent = char;
-                span.className = 'exploding-letter';
-                span.style.setProperty('--x', (Math.random() - 0.5) * 300 + 'px');
-                span.style.setProperty('--y', (Math.random() - 0.5) * 300 + 'px');
-                span.style.setProperty('--r', (Math.random() - 0.5) * 720 + 'deg');
-                el.appendChild(span);
-            });
-        };
-        createObserver(handleBombEffect).observe(scopeHeading);
     });
 </script>
 
