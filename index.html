@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GopalElectronicsPvt.Ltd.</title>
+    <title>Gopal Electronics Pvt. Ltd.</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -51,10 +51,11 @@
         }
        
         .modal { display: none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.4); justify-content: center; align-items: center; }
-        .modal-content { background-color: white; padding: 2rem; border-radius: 0.75rem; text-align: center; max-width: 90%; width: 400px; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); }
+        .modal-content { background-color: white; padding: 2rem; border-radius: 0.75rem; text-align: center; max-width: 90%; width: 500px; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); position: relative; }
         .modal-success { color: #16a34a; }
         .modal-error { color: #dc2626; }
         .section-padding { padding: 4rem 1.5rem; }
+        .product-card { cursor: pointer; }
 
         /* --- Custom Animation Styles --- */
         .highlight-active { transform: scale(1.03); box-shadow: 0 10px 40px rgba(13, 71, 161, 0.2); transition: transform 0.6s ease-out, box-shadow 0.6s ease-out; }
@@ -82,10 +83,21 @@
         </div>
     </div>
 
+    <div id="product-details-modal" class="modal">
+        <div class="modal-content text-left">
+            <h3 id="product-modal-title" class="text-2xl font-bold text-blue-800 mb-4"></h3>
+            <div id="product-modal-details" class="text-gray-700 space-y-2"></div>
+            <button id="close-product-modal" class="absolute top-4 right-4 text-gray-500 hover:text-gray-800">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+            </button>
+        </div>
+    </div>
+
+
     <header class="bg-slate-900 text-white shadow-lg sticky top-0 z-50">
         <div class="container mx-auto flex items-center justify-between p-4">
             <div>
-                <h1 class="text-xl font-bold tracking-tight">GopalElectronicsPvt.Ltd</h1>
+                <h1 class="text-xl font-bold tracking-tight">Gopal Electronics Pvt. Ltd.</h1>
                 <p class="text-xs text-slate-400">Advanced Electronics & Research</p>
             </div>
             <nav class="hidden md:flex items-center space-x-6">
@@ -103,20 +115,20 @@
         </div>
     </header>
 
-    <div id="mobile-menu-overlay" class="fixed inset-0 bg-slate-900 bg-opacity-95 z-40 transform -translate-x-full transition-transform duration-300 md:hidden">
+    <div id="mobile-menu-overlay" class="fixed inset-0 bg-slate-900 bg-opacity-95 z-50 transform -translate-x-full transition-transform duration-300 md:hidden">
         <div class="flex justify-end p-6">
             <button id="close-menu-btn" class="text-white focus:outline-none p-2 rounded-md">
                 <svg class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" /></svg>
             </button>
         </div>
         <nav class="flex flex-col items-center space-y-8 pt-12">
-            <a href="#" class="text-white text-2xl font-semibold hover:text-blue-300 transition" onclick="closeMobileMenu()">Home</a>
-            <a href="#vision-mission" class="text-white text-2xl font-semibold hover:text-blue-300 transition" onclick="closeMobileMenu()">About</a>
-            <a href="#services" class="text-white text-2xl font-semibold hover:text-blue-300 transition" onclick="closeMobileMenu()">Services</a>
-            <a href="#products" class="text-white text-2xl font-semibold hover:text-blue-300 transition" onclick="closeMobileMenu()">Our Products</a>
-            <a href="#repair" class="text-white text-2xl font-semibold hover:text-blue-300 transition" onclick="closeMobileMenu()">Repair & Maintenance</a>
-            <a href="#research-projects" class="text-white text-2xl font-semibold hover:text-blue-300 transition" onclick="closeMobileMenu()">R&D</a>
-            <a href="#contact" class="text-white text-2xl font-semibold hover:text-blue-300 transition" onclick="closeMobileMenu()">Contact Us</a>
+            <a href="#" class="text-white text-2xl font-semibold hover:text-blue-300 transition">Home</a>
+            <a href="#vision-mission" class="text-white text-2xl font-semibold hover:text-blue-300 transition">About</a>
+            <a href="#services" class="text-white text-2xl font-semibold hover:text-blue-300 transition">Services</a>
+            <a href="#products" class="text-white text-2xl font-semibold hover:text-blue-300 transition">Our Products</a>
+            <a href="#repair" class="text-white text-2xl font-semibold hover:text-blue-300 transition">Repair & Maintenance</a>
+            <a href="#research-projects" class="text-white text-2xl font-semibold hover:text-blue-300 transition">R&D</a>
+            <a href="#contact" class="text-white text-2xl font-semibold hover:text-blue-300 transition">Contact Us</a>
         </nav>
     </div>
 
@@ -124,7 +136,7 @@
         <section id="welcome-section" class="relative bg-cover bg-center py-24" style="background-image: url('header-background.jpg');">
             <div class="absolute inset-0 bg-slate-800 bg-opacity-60"></div>
             <div class="container mx-auto relative z-10 text-center text-white">
-                <h2 class="text-4xl font-bold tracking-tight sm:text-5xl text-white" style="border: none;">Welcome to GopalElectronics</h2>
+                <h2 class="text-4xl font-bold tracking-tight sm:text-5xl text-white" style="border: none;">Welcome to Gopal Electronics</h2>
                 <p class="mt-4 text-lg text-slate-200 max-w-4xl mx-auto">Innovating today for a smarter, more sustainable tomorrow. We are dedicated to pioneering advancements in technology and research that shape the future of industries and improve lives globally.</p>
             </div>
         </section>
@@ -133,22 +145,22 @@
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
                 <div class="p-8 bg-white rounded-2xl shadow-xl border border-gray-100">
                     <h3 class="text-2xl font-semibold text-blue-800 mb-4">Director's Message</h3>
-                    <p class="text-lg text-gray-600 italic leading-relaxed mb-6">At GopalElectronics, our vision is to pioneer advanced electronics and interdisciplinary research that empowers industries, transforms lives, and promotes sustainable development. As the Director, I am proud to lead a team of talented engineers, researchers, and innovators who are passionate about creating solutions that bridge technology and real-world challenges. From IoT, VLSI, and embedded systems to power electronics, renewable energy, and AI integration, we strive for excellence in every project we undertake. Our mission goes beyond developing products – we aim to foster a culture of collaboration, continuous learning, and innovation. Through our R&D initiatives, prototyping services, and repair & maintenance capabilities, we support our clients and partners in achieving their goals efficiently and reliably. At GopalElectronics, integrity, quality, and sustainability are the cornerstones of our work. We are committed to building technologies that not only meet today’s demands but also anticipate the needs of tomorrow. I invite you to explore our services, collaborate with us, and join us on this journey of innovation and technological excellence.</p>
+                    <p class="text-lg text-gray-600 italic leading-relaxed mb-6">At Gopal Electronics, our vision is to pioneer advanced electronics and interdisciplinary research that empowers industries, transforms lives, and promotes sustainable development. As the Director, I am proud to lead a team of talented engineers, researchers, and innovators who are passionate about creating solutions that bridge technology and real-world challenges. From IoT, VLSI, and embedded systems to power electronics, renewable energy, and AI integration, we strive for excellence in every project we undertake. Our mission goes beyond developing products – we aim to foster a culture of collaboration, continuous learning, and innovation. Through our R&D initiatives, prototyping services, and repair & maintenance capabilities, we support our clients and partners in achieving their goals efficiently and reliably. At Gopal Electronics, integrity, quality, and sustainability are the cornerstones of our work. We are committed to building technologies that not only meet today’s demands but also anticipate the needs of tomorrow. I invite you to explore our services, collaborate with us, and join us on this journey of innovation and technological excellence.</p>
                     <div class="text-right mt-6 pt-6 border-t border-gray-200">
                          <p class="font-bold text-gray-800">Anand Raj</p>
-                         <p class="text-sm text-gray-500">Director of GopalElectronics</p>
+                         <p class="text-sm text-gray-500">Director of Gopal Electronics</p>
                     </div>
                 </div>
                 <div class="p-8 bg-white rounded-2xl shadow-xl border border-gray-100">
                     <h3 class="text-2xl font-semibold text-blue-800 mb-4">Notice Board</h3>
                     <ul class="space-y-4">
                         <li class="border-b pb-2">
-                            <p class="text-sm text-gray-500">October 03, 2025</p>
-                            <p class="text-gray-700 font-medium">New R&D project on high-efficiency inverters has commenced.</p>
+                            <p class="text-sm text-gray-500">October 11, 2025</p>
+                            <p class="text-gray-700 font-medium">New cybersecurity research launched to prevent magnetic side-channel eavesdropping from wireless audio devices.</p>
                         </li>
                         <li class="border-b pb-2">
-                            <p class="text-sm text-gray-500">September 25, 2025</p>
-                            <p class="text-gray-700 font-medium">Quarterly performance review meeting scheduled for all teams.</p>
+                            <p class="text-sm text-gray-500">October 03, 2025</p>
+                            <p class="text-gray-700 font-medium">R&D project on high-efficiency inverters has commenced.</p>
                         </li>
                          <li class="pb-2">
                             <p class="text-sm text-gray-500">September 20, 2025</p>
@@ -198,35 +210,35 @@
                     <h2 class="text-3xl font-bold tracking-tight text-blue-900 sm:text-4xl" style="border: none; margin-bottom: 0.5rem;">Our Products</h2>
                     <div class="w-24 h-1 bg-blue-500 mx-auto"></div>
                 </div>
-                <p class="text-center max-w-3xl mx-auto mb-12 text-gray-600">We supply a comprehensive range of high-quality electrical components and systems to meet the demands of industrial, commercial, and residential projects.</p>
+                <p class="text-center max-w-3xl mx-auto mb-12 text-gray-600">We supply a comprehensive range of high-quality electrical components and systems. Click on a category to see more details.</p>
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-                    <div class="bg-white p-6 rounded-2xl shadow-lg border border-gray-200 border-t-4 border-blue-500 transition hover:-translate-y-2 hover:shadow-xl">
+                    <div class="product-card bg-white p-6 rounded-2xl shadow-lg border border-gray-200 border-t-4 border-blue-500 transition hover:-translate-y-2 hover:shadow-xl" data-product-key="transformers">
                         <div class="flex items-center space-x-4">
                             <div class="bg-blue-100 p-3 rounded-full"><svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z" /></svg></div>
                             <h3 class="text-xl font-bold text-blue-800">Transformers</h3>
                         </div>
-                        <p class="text-gray-700 mt-4">Power, Distribution, Single & Three-Phase, Step-up & Step-down, Current Transformers, Instrument Transformers, Isolation, Autotransformers, Audio Transformers, etc.</p>
+                        <p class="text-gray-700 mt-4 italic">Click to see the full range of transformers we supply.</p>
                     </div>
-                    <div class="bg-white p-6 rounded-2xl shadow-lg border border-gray-200 border-t-4 border-blue-500 transition hover:-translate-y-2 hover:shadow-xl">
+                    <div class="product-card bg-white p-6 rounded-2xl shadow-lg border border-gray-200 border-t-4 border-blue-500 transition hover:-translate-y-2 hover:shadow-xl" data-product-key="powerConversion">
                         <div class="flex items-center space-x-4">
                             <div class="bg-blue-100 p-3 rounded-full"><svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 3v2m6-2v2M9 19v2m6-2v2M5 9H3m2 6H3m18-6h-2m2 6h-2M12 6V3m0 18v-3" /></svg></div>
                             <h3 class="text-xl font-bold text-blue-800">Power Conversion & Control</h3>
                         </div>
-                        <p class="text-gray-700 mt-4">Voltage Converters, Motor Drivers, and Single & Three-Phase Magnetic Contactors,Voltage-Stabilizer.</p>
+                        <p class="text-gray-700 mt-4 italic">Includes converters, drivers, contactors, and more.</p>
                     </div>
-                    <div class="bg-white p-6 rounded-2xl shadow-lg border border-gray-200 border-t-4 border-blue-500 transition hover:-translate-y-2 hover:shadow-xl">
+                    <div class="product-card bg-white p-6 rounded-2xl shadow-lg border border-gray-200 border-t-4 border-blue-500 transition hover:-translate-y-2 hover:shadow-xl" data-product-key="specializedEquipment">
                         <div class="flex items-center space-x-4">
                             <div class="bg-blue-100 p-3 rounded-full"><svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4h4" /></svg></div>
                             <h3 class="text-xl font-bold text-blue-800">Specialized Equipment</h3>
                         </div>
-                        <p class="text-gray-700 mt-4">Welding Machines, Custom-build Lead Acid Batteries, and Constant-Current Battery Chargers For Industrial & Automobiles.</p>
+                        <p class="text-gray-700 mt-4 italic">Custom solutions for industrial and automotive needs.</p>
                     </div>
-                    <div class="bg-white p-6 rounded-2xl shadow-lg border border-gray-200 border-t-4 border-blue-500 transition hover:-translate-y-2 hover:shadow-xl">
+                    <div class="product-card bg-white p-6 rounded-2xl shadow-lg border border-gray-200 border-t-4 border-blue-500 transition hover:-translate-y-2 hover:shadow-xl" data-product-key="electricalInfrastructure">
                         <div class="flex items-center space-x-4">
                             <div class="bg-blue-100 p-3 rounded-full"><svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z" /></svg></div>
                             <h3 class="text-xl font-bold text-blue-800">Electrical Infrastructure</h3>
                         </div>
-                        <p class="text-gray-700 mt-4">HT Breakers, LT Panels, Distribution Boards (MCBs), Cable Trays/Raceways, Lightning Protection, and Earthing Materials.Etc </p>
+                        <p class="text-gray-700 mt-4 italic">Components for complete electrical installations.</p>
                     </div>
                 </div>
             </div>
@@ -271,32 +283,76 @@
         <section class="container mt-16" id="research-projects">
             <h2 class="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">Active Research Projects</h2>
              <p class="text-center max-w-3xl mx-auto mb-8 text-gray-600">Ongoing cutting-edge research and development work at Gopal Electronics.</p>
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-8 mt-8">
-                <article class="research-card bg-white rounded-2xl shadow-xl p-6 border border-gray-100"><span class="inline-block px-4 py-1 rounded-full text-sm font-bold text-teal-600 bg-teal-100">AI & Healthcare</span><h3 class="text-2xl font-bold text-gray-900 mt-4 mb-2">AI-enabled Non-Contact ECG using Radar Technology</h3><p class="text-gray-600 text-sm">Research and prototyping of contactless ECG sensing using radar (Doppler/mmWave) plus AI signal processing for beat detection, artifact removal, and arrhythmia screening.</p><ul class="list-disc list-inside mt-4 text-sm text-gray-500 space-y-2"><li>Radar front-end: FMCW / MIMO mmWave options</li><li>Signal processing: clutter removal, adaptive filtering</li><li>AI: deep learning models for ECG waveform extraction & classification</li></ul></article>
-                <article class="research-card bg-white rounded-2xl shadow-xl p-6 border border-gray-100"><span class="inline-block px-4 py-1 rounded-full text-sm font-bold text-fuchsia-600 bg-fuchsia-100">Assistive Tech</span><h3 class="text-2xl font-bold text-gray-900 mt-4 mb-2">Smart Wheelchair</h3><p class="text-gray-600 text-sm">Integrated smart wheelchair platform supporting mobile app control, voice/audio commands, gyroscope-based stabilization, joystick fallback, and AI-driven assistance.</p><ul class="list-disc list-inside mt-4 text-sm text-gray-500 space-y-2"><li>Controls: Mobile app (BLE/Wi‑Fi), Joystick, Voice</li><li>Sensors: Gyroscope, IMU, obstacle detection</li><li>AI: path-planning, user intent recognition, safety overrides</li></ul></article>
-                <article class="research-card bg-white rounded-2xl shadow-xl p-6 border border-gray-100"><span class="inline-block px-4 py-1 rounded-full text-sm font-bold text-orange-600 bg-orange-100">Power Electronics</span><h3 class="text-2xl font-bold text-gray-900 mt-4 mb-2">High-Frequency Sine Wave Inverters</h3><p class="text-gray-600 text-sm">Design and testing of compact, high-frequency inverters optimized for low-harmonic distortion and high-efficiency power conversion.</p><ul class="list-disc list-inside mt-4 text-sm text-gray-500 space-y-2"><li>Topologies: LLC, full-bridge with advanced modulation</li><li>Control: DSP/FPGA-based control loops</li><li>Applications: UPS, renewable integration</li></ul></article>
-                <article class="research-card bg-white rounded-2xl shadow-xl p-6 border border-gray-100"><span class="inline-block px-4 py-1 rounded-full text-sm font-bold text-amber-600 bg-amber-100">Solar Systems</span><h3 class="text-2xl font-bold text-gray-900 mt-4 mb-2">MPPT & Solar Charge Controllers</h3><p class="text-gray-600 text-sm">Maximum Power Point Tracking algorithms and robust solar charge controller firmware and hardware with battery management and grid-interactive features.</p><ul class="list-disc list-inside mt-4 text-sm text-gray-500 space-y-2"><li>MPPT methods: Perturb & Observe, Incremental Conductance, AI-assisted</li><li>Features: multi-stage charging, temperature compensation, telemetry</li><li>Form factors: standalone, hybrid inverter-integrated</li></ul></article>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mt-8">
+                <article class="research-card bg-white rounded-2xl shadow-xl p-6 border border-gray-100"><span class="inline-block px-4 py-1 rounded-full text-sm font-bold text-teal-600 bg-teal-100">AI & Healthcare</span><h3 class="text-2xl font-bold text-gray-900 mt-4 mb-2">AI-enabled Non-Contact ECG using Radar Technology</h3><p class="text-gray-600 text-sm">Research and prototyping of contactless ECG sensing using radar (Doppler/mmWave) plus AI signal processing for beat detection, artifact removal, and arrhythmia screening.</p>
+                    <ul class="list-disc list-inside mt-4 text-sm text-gray-500 space-y-2">
+                        <li>Radar front-end: FMCW / MIMO mmWave options</li>
+                        <li>Signal processing: Clutter removal, adaptive filtering</li>
+                        <li>AI Models: Deep learning for waveform extraction</li>
+                    </ul>
+                </article>
+                <article class="research-card bg-white rounded-2xl shadow-xl p-6 border border-gray-100"><span class="inline-block px-4 py-1 rounded-full text-sm font-bold text-fuchsia-600 bg-fuchsia-100">Assistive Tech</span><h3 class="text-2xl font-bold text-gray-900 mt-4 mb-2">Smart Wheelchair</h3><p class="text-gray-600 text-sm">Integrated smart wheelchair platform supporting mobile app control, voice/audio commands, gyroscope-based stabilization, joystick fallback, and AI-driven assistance.</p>
+                    <ul class="list-disc list-inside mt-4 text-sm text-gray-500 space-y-2">
+                        <li>Controls: Mobile app (BLE/Wi‑Fi), Joystick, Voice</li>
+                        <li>Sensors: Gyroscope, IMU, obstacle detection</li>
+                        <li>AI: Path-planning, user intent recognition</li>
+                    </ul>
+                </article>
+                <article class="research-card bg-white rounded-2xl shadow-xl p-6 border border-gray-100"><span class="inline-block px-4 py-1 rounded-full text-sm font-bold text-orange-600 bg-orange-100">Power Electronics</span><h3 class="text-2xl font-bold text-gray-900 mt-4 mb-2">High-Frequency Sine Wave Inverters</h3><p class="text-gray-600 text-sm">Design and testing of compact, high-frequency inverters optimized for low-harmonic distortion and high-efficiency power conversion.</p>
+                    <ul class="list-disc list-inside mt-4 text-sm text-gray-500 space-y-2">
+                        <li>Topologies: LLC, full-bridge with advanced modulation</li>
+                        <li>Control: DSP/FPGA-based control loops</li>
+                        <li>Applications: UPS, renewable integration</li>
+                    </ul>
+                </article>
+                <article class="research-card bg-white rounded-2xl shadow-xl p-6 border border-gray-100"><span class="inline-block px-4 py-1 rounded-full text-sm font-bold text-amber-600 bg-amber-100">Solar Systems</span><h3 class="text-2xl font-bold text-gray-900 mt-4 mb-2">MPPT & Solar Charge Controllers</h3><p class="text-gray-600 text-sm">Maximum Power Point Tracking algorithms and robust solar charge controller firmware and hardware with battery management.</p>
+                    <ul class="list-disc list-inside mt-4 text-sm text-gray-500 space-y-2">
+                        <li>MPPT Methods: Perturb & Observe, AI-assisted</li>
+                        <li>Features: Multi-stage charging, telemetry</li>
+                        <li>Form Factors: Standalone, hybrid-integrated</li>
+                    </ul>
+                </article>
+                <article class="research-card bg-white rounded-2xl shadow-xl p-6 border border-gray-100">
+                    <span class="inline-block px-4 py-1 rounded-full text-sm font-bold text-sky-600 bg-sky-100">Wireless Audio</span>
+                    <h3 class="text-2xl font-bold text-gray-900 mt-4 mb-2">Contactless Audio Amplification (NFA)</h3>
+                    <p class="text-gray-600 text-sm">Developing a 'lay-on' speaker system that captures and amplifies audio from a mobile device using near-field magnetic induction, eliminating the need for pairing or cables.</p>
+                    <ul class="list-disc list-inside mt-4 text-sm text-gray-500 space-y-2">
+                        <li>Sensor Tech: High-sensitivity inductive pickup coils</li>
+                        <li>Signal Processing: Noise cancellation algorithms</li>
+                        <li>Hardware: Compact, power-efficient amplifier circuits</li>
+                    </ul>
+                </article>
+                <article class="research-card bg-white rounded-2xl shadow-xl p-6 border border-gray-100">
+                    <span class="inline-block px-4 py-1 rounded-full text-sm font-bold text-purple-600 bg-purple-100">Adversarial Research</span>
+                    <h3 class="text-2xl font-bold text-gray-900 mt-4 mb-2">Preventing Magnetic Eavesdropping on Audio Devices</h3>
+                    <p class="text-gray-600 text-sm">This project focuses on preventing the unauthorized capture of audio signals from wireless devices like TWS earbuds. We are developing proprietary shielding and counter-measure technologies to defend against magnetic side-channel attacks, ensuring user privacy and preventing the misuse of sensitive information.</p>
+                    <ul class="list-disc list-inside mt-4 text-sm text-gray-500 space-y-2">
+                        <li>Analysis: Characterizing magnetic attack surfaces</li>
+                        <li>Defense: Developing authentication protocols</li>
+                        <li>Implementation: Hardware & firmware countermeasures</li>
+                    </ul>
+                </article>
             </div>
         </section>
 
         <section class="container mt-16" id="engineers">
             <h2 class="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">Our Engineers</h2>
-            <p class="text-center text-gray-600 max-w-3xl mx-auto">Meet the skilled engineers driving innovation and excellence at GopalElectronicsPvt.Ltd. Our team is composed of passionate experts dedicated to pushing the boundaries of technology.</p>
+            <p class="text-center text-gray-600 max-w-3xl mx-auto">Meet the skilled engineers driving innovation and excellence at Gopal Electronics Pvt. Ltd. Our team is composed of passionate experts dedicated to pushing the boundaries of technology.</p>
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mt-8">
-                <div class="card bg-white rounded-2xl shadow-xl p-6 flex flex-col sm:flex-row items-center space-y-4 sm:space-y-0 sm:space-x-4"><img src="founder.jpg" alt="Loknath Das" class="rounded-full object-cover w-20 h-20 border-4 border-blue-500"><div class="text-center sm:text-left"><h3 class="text-lg font-bold text-gray-900">Mr. Loknath Das</h3><p class="text-xs font-semibold text-blue-600">GATE 2025 Qualified</p><p class="text-sm italic text-gray-500 mt-1">Founder</p><p class="text-sm text-gray-600 mt-2">B.Tech in ECE, AUS</p><p class="text-xs text-gray-500"><strong>Research:</strong> VLSI, IoT, Embedded Systems, Antenna Design</p></div></div>
-                <div class="card bg-white rounded-2xl shadow-xl p-6 flex flex-col sm:flex-row items-center space-y-4 sm:space-y-0 sm:space-x-4"><img src="rajeev.jpg" alt="Rajeev Ranjan" class="rounded-full object-cover w-20 h-20 border-4 border-blue-500"><div class="text-center sm:text-left"><h3 class="text-lg font-bold text-gray-900">Mr. Rajeev Ranjan</h3><p class="text-sm italic text-gray-500">Co-Founder</p><p class="text-sm text-gray-600 mt-2">B.Tech in CSE, AUS</p><p class="text-xs text-gray-500"><strong>Research:</strong> Software Engineering</p></div></div>
-                <div class="card bg-white rounded-2xl shadow-xl p-6 flex flex-col sm:flex-row items-center space-y-4 sm:space-y-0 sm:space-x-4"><img src="praveen.jpg" alt="Praveen Singh" class="rounded-full object-cover w-20 h-20 border-4 border-blue-500"><div class="text-center sm:text-left"><h3 class="text-lg font-bold text-gray-900">Mr. Praveen Singh</h3><p class="text-xs font-semibold text-blue-600">GATE 2025 Qualified</p><p class="text-sm italic text-gray-500 mt-1">Chief Executive Officer (CEO)</p><p class="text-sm text-gray-600 mt-2">B.Tech in ECE, AUS</p><p class="text-xs text-gray-500"><strong>Research:</strong> AI, Machine Learning, Image Processing</p></div></div>
-                <div class="card bg-white rounded-2xl shadow-xl p-6 flex flex-col sm:flex-row items-center space-y-4 sm:space-y-0 sm:space-x-4"><img src="anand.jpg" alt="Anand Raj" class="rounded-full object-cover w-20 h-20 border-4 border-blue-500"><div class="text-center sm:text-left"><h3 class="text-lg font-bold text-gray-900">Mr. Anand raj</h3><p class="text-sm italic text-gray-500">Director</p><p class="text-sm text-gray-600 mt-2">B.Tech in CSE, AUS</p><p class="text-xs text-gray-500"><strong>Research:</strong> ML, Deep Learning, Computer Vision</p></div></div>
-                <div class="card bg-white rounded-2xl shadow-xl p-6 flex flex-col sm:flex-row items-center space-y-4 sm:space-y-0 sm:space-x-4"><img src="biptu.jpg" alt="Biptu Dhar" class="rounded-full object-cover w-20 h-20 border-4 border-blue-500"><div class="text-center sm:text-left"><h3 class="text-lg font-bold text-gray-900">Mr. Biptu Dhar</h3><p class="text-sm italic text-gray-500">Core Team</p><p class="text-sm text-gray-600 mt-2">B.Tech in ETE, BVEC, Assam</p><p class="text-xs text-gray-500"><strong>Research:</strong> Power Electronics, Power Systems, Autocad</p></div></div>
-                <div class="card bg-white rounded-2xl shadow-xl p-6 flex flex-col sm:flex-row items-center space-y-4 sm:space-y-0 sm:space-x-4"><img src="kishore.jpg" alt="Kishore Namasudra" class="rounded-full object-cover w-20 h-20 border-4 border-blue-500"><div class="text-center sm:text-left"><h3 class="text-lg font-bold text-gray-900">Mr. Kishore Namasudra</h3><p class="text-sm italic text-gray-500">Core Team</p><p class="text-sm text-gray-600 mt-2">Diploma in Mechanical Engineering</p><p class="text-xs text-gray-500"><strong>Research:</strong> Electrical Machines</p></div></div>
-                <div class="card bg-white rounded-2xl shadow-xl p-6 flex flex-col sm:flex-row items-center space-y-4 sm:space-y-0 sm:space-x-4"><img src="ashish.jpg" alt="Ashish Kumar Das" class="rounded-full object-cover w-20 h-20 border-4 border-blue-500"><div class="text-center sm:text-left"><h3 class="text-lg font-bold text-gray-900">Mr. Ashish Kumar Das</h3><p class="text-sm italic text-gray-500">Core Team</p<p class="text-sm text-gray-600 mt-2">B.Sc. (Hons.) in Mathematics</p><p class="text-xs text-gray-500"><strong>Research:</strong> Software Engineering</p></div></div>
+                <div class="card bg-white rounded-2xl shadow-xl p-6 flex flex-col sm:flex-row items-center space-y-4 sm:space-y-0 sm:space-x-4"><img src="founder.jpg" alt="Loknath Das" class="rounded-full object-cover w-20 h-20 border-4 border-blue-500"><div class="text-center sm:text-left"><h3 class="text-lg font-bold text-gray-900">Mr. Loknath Das</h3><p class="text-xs font-semibold text-blue-600">GATE 2025 Qualified</p><p class="text-sm italic text-gray-500 mt-1">Founder</p><p class="text-sm text-gray-600 mt-2">B.Tech in ECE, AUS</p><p class="text-xs text-gray-500 mt-2"><strong>Research:</strong> VLSI, IoT, Embedded Systems, Antenna Design</p></div></div>
+                <div class="card bg-white rounded-2xl shadow-xl p-6 flex flex-col sm:flex-row items-center space-y-4 sm:space-y-0 sm:space-x-4"><img src="rajeev.jpg" alt="Rajeev Ranjan" class="rounded-full object-cover w-20 h-20 border-4 border-blue-500"><div class="text-center sm:text-left"><h3 class="text-lg font-bold text-gray-900">Mr. Rajeev Ranjan</h3><p class="text-sm italic text-gray-500">Co-Founder</p><p class="text-sm text-gray-600 mt-2">B.Tech in CSE, AUS</p><p class="text-xs text-gray-500 mt-2"><strong>Research:</strong> Software Engineering</p></div></div>
+                <div class="card bg-white rounded-2xl shadow-xl p-6 flex flex-col sm:flex-row items-center space-y-4 sm:space-y-0 sm:space-x-4"><img src="praveen.jpg" alt="Praveen Singh" class="rounded-full object-cover w-20 h-20 border-4 border-blue-500"><div class="text-center sm:text-left"><h3 class="text-lg font-bold text-gray-900">Mr. Praveen Singh</h3><p class="text-xs font-semibold text-blue-600">GATE 2025 Qualified</p><p class="text-sm italic text-gray-500 mt-1">Chief Executive Officer (CEO)</p><p class="text-sm text-gray-600 mt-2">B.Tech in ECE, AUS</p><p class="text-xs text-gray-500 mt-2"><strong>Research:</strong> AI, Machine Learning, Image Processing</p></div></div>
+                <div class="card bg-white rounded-2xl shadow-xl p-6 flex flex-col sm:flex-row items-center space-y-4 sm:space-y-0 sm:space-x-4"><img src="anand.jpg" alt="Anand Raj" class="rounded-full object-cover w-20 h-20 border-4 border-blue-500"><div class="text-center sm:text-left"><h3 class="text-lg font-bold text-gray-900">Mr. Anand raj</h3><p class="text-sm italic text-gray-500">Director</p><p class="text-sm text-gray-600 mt-2">B.Tech in CSE, AUS</p><p class="text-xs text-gray-500 mt-2"><strong>Research:</strong> ML, Deep Learning, Computer Vision</p></div></div>
+                <div class="card bg-white rounded-2xl shadow-xl p-6 flex flex-col sm:flex-row items-center space-y-4 sm:space-y-0 sm:space-x-4"><img src="biptu.jpg" alt="Biptu Dhar" class="rounded-full object-cover w-20 h-20 border-4 border-blue-500"><div class="text-center sm:text-left"><h3 class="text-lg font-bold text-gray-900">Mr. Biptu Dhar</h3><p class="text-sm italic text-gray-500">Core Team</p><p class="text-sm text-gray-600 mt-2">B.Tech in ETE, BVEC, Assam</p><p class="text-xs text-gray-500 mt-2"><strong>Research:</strong> Power Electronics, Power Systems, Autocad</p></div></div>
+                <div class="card bg-white rounded-2xl shadow-xl p-6 flex flex-col sm:flex-row items-center space-y-4 sm:space-y-0 sm:space-x-4"><img src="kishore.jpg" alt="Kishore Namasudra" class="rounded-full object-cover w-20 h-20 border-4 border-blue-500"><div class="text-center sm:text-left"><h3 class="text-lg font-bold text-gray-900">Mr. Kishore Namasudra</h3><p class="text-sm italic text-gray-500">Core Team</p><p class="text-sm text-gray-600 mt-2">Diploma in Mechanical Engineering</p><p class="text-xs text-gray-500 mt-2"><strong>Research:</strong> Electrical Machines</p></div></div>
+                <div class="card bg-white rounded-2xl shadow-xl p-6 flex flex-col sm:flex-row items-center space-y-4 sm:space-y-0 sm:space-x-4"><img src="ashish.jpg" alt="Ashish Kumar Das" class="rounded-full object-cover w-20 h-20 border-4 border-blue-500"><div class="text-center sm:text-left"><h3 class="text-lg font-bold text-gray-900">Mr. Ashish Kumar Das</h3><p class="text-sm italic text-gray-500">Core Team</p><p class="text-sm text-gray-600 mt-2">B.Sc. (Hons.) in Mathematics</p><p class="text-xs text-gray-500 mt-2"><strong>Research:</strong> Software Engineering</p></div></div>
             </div>
         </section>
 
         <section class="container mt-16" id="contact">
             <h2 class="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">Contact Us</h2>
             <div class="flex flex-col md:flex-row gap-8 mt-8">
-                <div class="bg-blue-950 text-white p-8 rounded-2xl shadow-lg w-full md:max-w-sm"><h3 class="text-2xl font-bold mb-6 text-white">Contact Details</h3><div class="space-y-6"><div class="flex items-start space-x-4"><div class="bg-blue-700 p-3 rounded-full flex-shrink-0"><svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" /></svg></div><div><p class="text-gray-400 text-sm">Email</p><p class="mt-1 font-semibold text-sm break-words">gopalelectronicslabs@gmail.com</p></div></div><div class="flex items-start space-x-4"><div class="bg-blue-700 p-3 rounded-full flex-shrink-0"><svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" /></svg></div><div><p class="text-gray-400 text-sm">Phone</p><p class="mt-1 font-semibold text-sm">+91 6002129253</p></div></div></div><div class="mt-8 pt-8 border-t border-gray-700"><h3 class="text-2xl font-bold mb-4">Office Address</h3><p class="mb-4 text-gray-300 text-sm leading-relaxed"><strong>R&D Center</strong><br>Gopal Electronics Pvt.Ltd.,<br>barjalenga grant,barjalenga <br>Dist. Cachar, Assam 788117<br><a href="https://maps.app.goo.gl/U17WW7PfqGj4BEgo8" target="_blank" class="text-blue-400 hover:underline">View on Google Maps</a></p><p class="text-gray-300 text-sm leading-relaxed"><strong>Registered Office</strong><br>Borjalenga mahabirchara road, MP9M+VJ5<br>Bor Jalenga Grant, Dist Cachar, 788117<br><a href="https://maps.google.com/?cid=11163845142699000980&g_mp=Cidnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaFRleHQ" target="_blank" class="text-blue-400 hover:underline">View on Google Maps</a></p></div></div>
+                <div class="bg-blue-950 text-white p-8 rounded-2xl shadow-lg w-full md:max-w-sm"><h3 class="text-2xl font-bold mb-6 text-white">Contact Details</h3><div class="space-y-6"><div class="flex items-start space-x-4"><div class="bg-blue-700 p-3 rounded-full flex-shrink-0"><svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" /></svg></div><div><p class="text-gray-400 text-sm">Email</p><p class="mt-1 font-semibold text-sm break-words">gopalelectronicslabs@gmail.com</p></div></div><div class="flex items-start space-x-4"><div class="bg-blue-700 p-3 rounded-full flex-shrink-0"><svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" /></svg></div><div><p class="text-gray-400 text-sm">Phone</p><p class="mt-1 font-semibold text-sm">+91 6002129253</p></div></div></div><div class="mt-8 pt-8 border-t border-gray-700"><h3 class="text-2xl font-bold mb-4">Office Address</h3><p class="mb-4 text-gray-300 text-sm leading-relaxed"><strong>R&D Center</strong><br>Gopal Electronics Pvt. Ltd.,<br>barjalenga grant,barjalenga <br>Dist. Cachar, Assam 788117<br><a href="https://www.google.com/maps" target="_blank" class="text-blue-400 hover:underline">View on Google Maps</a></p><p class="text-gray-300 text-sm leading-relaxed"><strong>Registered Office</strong><br>Borjalenga mahabirchara road, MP9M+VJ5<br>Bor Jalenga Grant, Dist Cachar, 788117<br><a href="https://www.google.com/maps" target="_blank" class="text-blue-400 hover:underline">View on Google Maps</a></p></div></div>
                 <div id="message-us" class="contact-form p-8 bg-white rounded-2xl shadow-lg w-full">
                     <h3 class="text-2xl font-bold text-gray-900 mb-6">Send us a message</h3>
                     <form id="contact-form">
@@ -323,45 +379,160 @@
     </main>
 
     <footer class="bg-blue-900 text-white text-center py-8 px-4">
-        <div class="container"><p class="text-sm">© 2025 GopalElectronicsPvt.Ltd. All Rights Reserved.</p></div>
+        <div class="container"><p class="text-sm">© 2025 Gopal Electronics Pvt. Ltd. All Rights Reserved.</p></div>
     </footer>
 
     <script>
-    // --- Modal and Basic Page Logic ---
-    let correctCaptchaAnswer;
-    function generateCaptcha() {
-        const num1 = Math.floor(Math.random() * 10) + 1; const num2 = Math.floor(Math.random() * 10) + 1;
-        correctCaptchaAnswer = num1 + num2; document.getElementById('captcha-question').innerText = `${num1} + ${num2} = ?`;
-    }
-    function showModal(message, isSuccess) {
-        const modal = document.getElementById('message-modal'); const modalMessage = document.getElementById('modal-message'); const modalIcon = document.getElementById('modal-icon');
-        modalMessage.innerText = message;
-        if (isSuccess) {
-            modalIcon.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16 mx-auto text-green-500" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" /></svg>`;
-            modalMessage.classList.add('modal-success'); modalMessage.classList.remove('modal-error');
-        } else {
-            modalIcon.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16 mx-auto text-red-500" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd" /></svg>`;
-            modalMessage.classList.add('modal-error'); modalMessage.classList.remove('modal-success');
-        }
-        modal.style.display = 'flex';
-    }
-    function closeModal() { document.getElementById('message-modal').style.display = 'none'; }
-   
-    const mobileMenuBtn = document.getElementById('mobile-menu-btn'); const closeMenuBtn = document.getElementById('close-menu-btn'); const mobileMenuOverlay = document.getElementById('mobile-menu-overlay');
-    mobileMenuBtn.addEventListener('click', () => { mobileMenuOverlay.classList.remove('-translate-x-full'); });
-    closeMenuBtn.addEventListener('click', () => { mobileMenuOverlay.classList.add('-translate-x-full'); });
-    function closeMobileMenu() { mobileMenuOverlay.classList.add('-translate-x-full'); }
-   
-    // --- Page Load Initializations and Effects ---
     document.addEventListener('DOMContentLoaded', () => {
+
+        const productData = {
+            transformers: {
+                title: "Transformers",
+                details: [
+                    "Power & Distribution",
+                    "Single & Three-Phase",
+                    "Step-Up & Step-Down",
+                    "Instrument (CT, PT, CT-PT)",
+                    "Isolation & Autotransformers",
+                    "Audio & Pulse",
+                    "Welding & High-Frequency",
+                    "Ferrite Core & Center Tapped",
+                    "Star-Delta & HV Testing"
+                ]
+            },
+            powerConversion: {
+                title: "Power Conversion & Control",
+                details: [
+                    "Voltage Converters",
+                    "Motor Drivers",
+                    "Single-Phase Magnetic Contactors",
+                    "Three-Phase Magnetic Contactors",
+                    "Voltage Stabilizers"
+                ]
+            },
+            specializedEquipment: {
+                title: "Specialized Equipment",
+                details: [
+                    "Welding Machines",
+                    "Custom-build Lead Acid Batteries",
+                    "Constant-Current Battery Chargers (Industrial)",
+                    "Constant-Current Battery Chargers (Automobiles)"
+                ]
+            },
+            electricalInfrastructure: {
+                title: "Electrical Infrastructure",
+                details: [
+                    "High-Tension (HT) Breakers",
+                    "Low-Tension (LT) Panels",
+                    "Distribution Boards (MCBs)",
+                    "Cable Trays & Raceways",
+                    "Lightning Protection Systems",
+                    "Earthing Materials"
+                ]
+            }
+        };
+
+        const productModal = document.getElementById('product-details-modal');
+        const productModalTitle = document.getElementById('product-modal-title');
+        const productModalDetails = document.getElementById('product-modal-details');
+        const closeProductModalBtn = document.getElementById('close-product-modal');
+        const productCards = document.querySelectorAll('.product-card');
+
+        productCards.forEach(card => {
+            card.addEventListener('click', () => {
+                const key = card.dataset.productKey;
+                const data = productData[key];
+
+                if (data) {
+                    productModalTitle.innerText = data.title;
+                    productModalDetails.innerHTML = '';
+                    const ul = document.createElement('ul');
+                    ul.className = 'list-disc list-inside space-y-2';
+                    data.details.forEach(itemText => {
+                        const li = document.createElement('li');
+                        li.innerText = itemText;
+                        ul.appendChild(li);
+                    });
+                    productModalDetails.appendChild(ul);
+                    productModal.style.display = 'flex';
+                }
+            });
+        });
+
+        function closeProductModal() {
+            productModal.style.display = 'none';
+        }
+        closeProductModalBtn.addEventListener('click', closeProductModal);
+        
+        productModal.addEventListener('click', (event) => {
+            if (event.target === productModal) {
+                closeProductModal();
+            }
+        });
+
+        let correctCaptchaAnswer;
+
+        function generateCaptcha() {
+            const num1 = Math.floor(Math.random() * 10) + 1;
+            const num2 = Math.floor(Math.random() * 10) + 1;
+            correctCaptchaAnswer = num1 + num2;
+            document.getElementById('captcha-question').innerText = `${num1} + ${num2} = ?`;
+        }
+
+        function showModal(message, isSuccess) {
+            const modal = document.getElementById('message-modal');
+            const modalMessage = document.getElementById('modal-message');
+            const modalIcon = document.getElementById('modal-icon');
+            modalMessage.innerText = message;
+            if (isSuccess) {
+                modalIcon.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16 mx-auto text-green-500" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" /></svg>`;
+                modalMessage.classList.add('modal-success');
+                modalMessage.classList.remove('modal-error');
+            } else {
+                modalIcon.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16 mx-auto text-red-500" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd" /></svg>`;
+                modalMessage.classList.add('modal-error');
+                modalMessage.classList.remove('modal-success');
+            }
+            modal.style.display = 'flex';
+        }
+
+        window.closeModal = function() { 
+            document.getElementById('message-modal').style.display = 'none';
+        }
+
+        const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+        const closeMenuBtn = document.getElementById('close-menu-btn');
+        const mobileMenuOverlay = document.getElementById('mobile-menu-overlay');
+        const mobileNavLinks = document.querySelectorAll('#mobile-menu-overlay nav a');
+
+        function openMobileMenu() {
+            mobileMenuOverlay.classList.remove('-translate-x-full');
+        }
+
+        function closeMobileMenu() {
+            mobileMenuOverlay.classList.add('-translate-x-full');
+        }
+
+        mobileMenuBtn.addEventListener('click', openMobileMenu);
+        closeMenuBtn.addEventListener('click', closeMobileMenu);
+        mobileNavLinks.forEach(link => {
+            link.addEventListener('click', closeMobileMenu);
+        });
+
         generateCaptcha();
 
-        const observerOptions = { threshold: 0.5 };
+        const observerOptions = {
+            threshold: 0.5
+        };
         const createObserver = (handler) => new IntersectionObserver((entries, observer) => {
-            entries.forEach(entry => { if (entry.isIntersecting) { handler(entry.target); observer.unobserve(entry.target); }});
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    handler(entry.target);
+                    observer.unobserve(entry.target);
+                }
+            });
         }, observerOptions);
 
-        // --- Contact Form Submission Logic ---
         const form = document.getElementById('contact-form');
         form.addEventListener('submit', function(event) {
             event.preventDefault();
@@ -371,9 +542,9 @@
                 generateCaptcha();
                 return;
             }
-           
+
             const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyd_P906GzHqGqK28RUo0dR7KtDE7BSApeI6KF1zs1HSgObed8q65SaBkA7Zn-cFyZf/exec';
-           
+
             if (SCRIPT_URL === 'PASTE_YOUR_GOOGLE_SCRIPT_URL_HERE') {
                 showModal('Form is not configured. Please paste the script URL.', false);
                 return;
@@ -388,29 +559,28 @@
             formData.forEach((value, key) => (data[key] = value));
 
             fetch(SCRIPT_URL, {
-                method: 'POST',
-                mode: 'no-cors',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(data)
-            })
-            .then(() => {
-                showModal('Message sent successfully! Thank you.', true);
-                form.reset();
-            })
-            .catch(error => {
-                showModal('Oops! There was a problem submitting your form.', false);
-                console.error('Error:', error);
-            })
-            .finally(() => {
-                generateCaptcha();
-                submitButton.disabled = false;
-                submitButton.innerHTML = `Send Message <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 ml-2" viewBox="0 0 20 20" fill="currentColor"><path d="M10.894 2.553a1 1 0 00-1.788 0l-7 14a1 1 0 001.342 1.342L10 15.464l5.564 2.93a1 1 0 001.342-1.342l-7-14z" /></svg>`;
-            });
+                    method: 'POST',
+                    mode: 'no-cors',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(data)
+                })
+                .then(() => {
+                    showModal('Message sent successfully! Thank you.', true);
+                    form.reset();
+                })
+                .catch(error => {
+                    showModal('Oops! There was a problem submitting your form.', false);
+                    console.error('Error:', error);
+                })
+                .finally(() => {
+                    generateCaptcha();
+                    submitButton.disabled = false;
+                    submitButton.innerHTML = `Send Message <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 ml-2" viewBox="0 0 20 20" fill="currentColor"><path d="M10.894 2.553a1 1 0 00-1.788 0l-7 14a1 1 0 001.342 1.342L10 15.464l5.564 2.93a1 1 0 001.342-1.342l-7-14z" /></svg>`;
+                });
         });
-       
-        // --- Effects ---
+
         const visionMissionCard = document.getElementById('vision-mission-card');
         const handleHighlight = (el) => el.classList.add('highlight-active');
         createObserver(handleHighlight).observe(visionMissionCard);
@@ -418,7 +588,8 @@
         const welcomeSection = document.getElementById('welcome-section');
         const handleTechSymbols = (el) => {
             const symbols = [
- '∫', 'Σ', 'π', '√', 'E=mc²', 'a²+b²', '∞', 'Δ', 'μ', '∑ F=ma', 'x(t)', 'x[n]', 'δ(t)', 'u(t)', 'e^(jωt)', 'H(jω)', '|H(f)|', '∠θ', 'V=IR', 'I=C dV/dt', 'V=L di/dt', 'f_c = 1/(2πRC)', 'β', 'gm', 'V_BE', 'Ic = β Ib', '0', '1', '⊕', '·', '+', '¬', 'CLK', 'FF', 'Qn+1 = D', 'MUX', '↑', '↓', '⎍', 'T', 'f = 1/T', 'PWM', 'D = Ton/T', 'Ton', 'Toff', 'IP', 'TCP', 'UDP', 'OSI', 'LAN', 'WAN', 'MAN', 'Pkt', 'ACK', 'NAK', '↔', '∥', '⟲', 'PC', 'SP', 'HL', 'DE', 'BC', 'A', 'IN', 'OUT', 'NOP', 'HLT', 'CALL', 'RET', 'RST', 'MOV', 'ADD', 'SUB', 'ANA', 'H₂O', 'CO₂', 'NaCl', 'HCl', 'CH₄', 'C₆H₁₂O₆', 'Δ', 'pH', '→', '⇌', '↑', '↓', 'Zener', 'LED', 'PN', 'Id = Is(e^(Vd/ηVT) - 1)', 'BJT', 'FET', 'MOSFET', 'Vth', 'gm = ΔId/ΔVgs', 'rπ', 'λ'];
+                '∫', 'Σ', 'π', '√', 'E=mc²', 'a²+b²', '∞', 'Δ', 'μ', '∑ F=ma', 'x(t)', 'x[n]', 'δ(t)', 'u(t)', 'e^(jωt)', 'H(jω)', '|H(f)|', '∠θ', 'V=IR', 'I=C dV/dt', 'V=L di/dt', 'f_c = 1/(2πRC)', 'β', 'gm', 'V_BE', 'Ic = β Ib', '0', '1', '⊕', '·', '+', '¬', 'CLK', 'FF', 'Qn+1 = D', 'MUX', '↑', '↓', '⎍', 'T', 'f = 1/T', 'PWM', 'D = Ton/T', 'Ton', 'Toff', 'IP', 'TCP', 'UDP', 'OSI', 'LAN', 'WAN', 'MAN', 'Pkt', 'ACK', 'NAK', '↔', '∥', '⟲', 'PC', 'SP', 'HL', 'DE', 'BC', 'A', 'IN', 'OUT', 'NOP', 'HLT', 'CALL', 'RET', 'RST', 'MOV', 'ADD', 'SUB', 'ANA', 'H₂O', 'CO₂', 'NaCl', 'HCl', 'CH₄', 'C₆H₁₂O₆', 'Δ', 'pH', '→', '⇌', '↑', '↓', 'Zener', 'LED', 'PN', 'Id = Is(e^(Vd/ηVT) - 1)', 'BJT', 'FET', 'MOSFET', 'Vth', 'gm = ΔId/ΔVgs', 'rπ', 'λ'
+            ];
             const symbolInterval = setInterval(() => {
                 const symbol = document.createElement('div');
                 symbol.classList.add('tech-symbol');
@@ -427,7 +598,9 @@
                 symbol.style.animationDuration = Math.random() * 5 + 7 + 's';
                 symbol.style.fontSize = Math.random() * 1.5 + 1 + 'rem';
                 document.body.appendChild(symbol);
-                setTimeout(() => { symbol.remove(); }, 12000);
+                setTimeout(() => {
+                    symbol.remove();
+                }, 12000);
             }, 400);
             setTimeout(() => clearInterval(symbolInterval), 12000);
         };
@@ -438,6 +611,7 @@
         const handleWaterEffect = (el) => {
             el.style.filter = 'url(#water-vibrate-filter)';
             let seed = 0;
+
             function animateTurbulence() {
                 seed += 0.02;
                 turbulence.setAttribute('seed', seed);
@@ -447,7 +621,7 @@
         };
         createObserver(handleWaterEffect).observe(servicesHeading);
     });
-</script>
+    </script>
 
 </body>
-</html>
+</html> 
