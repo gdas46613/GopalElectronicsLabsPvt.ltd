@@ -50,8 +50,8 @@
             }
         }
        
-        .modal { display: none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.4); justify-content: center; align-items: center; }
-        .modal-content { background-color: white; padding: 2rem; border-radius: 0.75rem; text-align: center; max-width: 90%; width: 500px; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); position: relative; }
+        .modal { display: none; position: fixed; z-index: 10000; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.4); justify-content: center; align-items: center; }
+        .modal-content { background-color: white; padding: 2rem; border-radius: 0.75rem; text-align: left; max-width: 90%; width: 800px; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); position: relative; max-height: 90vh; overflow-y: auto; }
         .modal-success { color: #16a34a; }
         .modal-error { color: #dc2626; }
         .section-padding { padding: 4rem 1.5rem; }
@@ -64,10 +64,37 @@
         @keyframes fall {
             to { transform: translateY(105vh) rotate(270deg); opacity: 0; }
         }
+
+        /* --- Header Font Controls --- */
+        .font-controls button {
+            font-size: 0.8rem;
+            border: 1px solid #475569;
+            background-color: #334155;
+            color: #e2e8f0;
+            padding: 0.25rem 0.5rem;
+            border-radius: 0.25rem;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+        .font-controls button:hover {
+            background-color: #475569;
+        }
+
+        /* --- High Contrast Styles --- */
+        body.high-contrast { background-color: #000 !important; color: #fff !important; }
+        .high-contrast h1, .high-contrast h2, .high-contrast h3, .high-contrast p, .high-contrast strong, .high-contrast span, .high-contrast li, .high-contrast div { color: #fff !important; }
+        .high-contrast .bg-white, .high-contrast .bg-gray-50, .high-contrast .bg-blue-50, .high-contrast .modal-content { background-color: #000 !important; border: 1px solid #fff !important; }
+        .high-contrast a { color: #ffff00 !important; }
+        .high-contrast header, .high-contrast footer { background-color: #111 !important; }
+        .high-contrast .text-slate-400, .high-contrast .text-gray-500, .high-contrast .text-gray-600 { color: #ccc !important; }
+        .high-contrast input, .high-contrast textarea, .high-contrast #captcha-question { background-color: #333 !important; color: #fff !important; border: 1px solid #fff; }
+        .high-contrast .bg-blue-100 { background-color: #222 !important; }
+        .high-contrast .text-blue-800, .high-contrast .text-blue-900, .high-contrast .text-blue-600, .high-contrast h2 { color: #00ffff !important; }
+        .high-contrast .font-controls button { background: #000; color: #fff; border-color: #fff; }
     </style>
 </head>
 <body class="bg-gray-50 text-gray-800 antialiased">
-   
+
     <svg style="display:none;">
         <filter id="water-vibrate-filter">
             <feTurbulence type="fractalNoise" baseFrequency="0.01 0.03" numOctaves="1" result="turbulence" seed="0"></feTurbulence>
@@ -76,18 +103,27 @@
     </svg>
 
     <div id="message-modal" class="modal">
-        <div class="modal-content">
+        <div class="modal-content !text-center">
             <div id="modal-icon" class="text-4xl mb-4"></div>
             <p id="modal-message" class="text-lg font-semibold mb-4"></p>
-            <button onclick="closeModal()" class="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition">Close</button>
+            <button onclick="closeModal('message-modal')" class="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition">Close</button>
         </div>
     </div>
 
     <div id="product-details-modal" class="modal">
-        <div class="modal-content text-left">
-            <h3 id="product-modal-title" class="text-2xl font-bold text-blue-800 mb-4"></h3>
+        <div class="modal-content">
+            <h3 id="product-modal-title" class="text-2xl font-bold text-blue-800 mb-4 text-center"></h3>
             <div id="product-modal-details" class="text-gray-700 space-y-2"></div>
-            <button id="close-product-modal" class="absolute top-4 right-4 text-gray-500 hover:text-gray-800">
+            <button onclick="closeModal('product-details-modal')" class="absolute top-4 right-4 text-gray-500 hover:text-gray-800">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+            </button>
+        </div>
+    </div>
+    
+    <div id="policy-modal" class="modal">
+        <div class="modal-content">
+            <div id="policy-modal-content"></div>
+            <button onclick="closeModal('policy-modal')" class="absolute top-4 right-4 text-gray-500 hover:text-gray-800">
                 <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
             </button>
         </div>
@@ -108,6 +144,11 @@
                 <a href="#repair" class="text-sm font-medium text-slate-300 hover:text-white transition">Repair & Maintenance</a>
                 <a href="#research-projects" class="text-sm font-medium text-slate-300 hover:text-white transition">R&D</a>
                 <a href="#contact" class="text-sm font-medium text-slate-300 hover:text-white transition">Contact Us</a>
+                <div class="font-controls flex items-center gap-2">
+                    <button id="font-dec">A-</button>
+                    <button id="font-reset">A</button>
+                    <button id="font-inc">A+</button>
+                </div>
             </nav>
             <button id="mobile-menu-btn" class="text-white focus:outline-none md:hidden p-2 rounded-md">
                 <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7" /></svg>
@@ -122,13 +163,13 @@
             </button>
         </div>
         <nav class="flex flex-col items-center space-y-8 pt-12">
-            <a href="#" class="text-white text-2xl font-semibold hover:text-blue-300 transition">Home</a>
-            <a href="#vision-mission" class="text-white text-2xl font-semibold hover:text-blue-300 transition">About</a>
-            <a href="#services" class="text-white text-2xl font-semibold hover:text-blue-300 transition">Services</a>
-            <a href="#products" class="text-white text-2xl font-semibold hover:text-blue-300 transition">Our Products</a>
-            <a href="#repair" class="text-white text-2xl font-semibold hover:text-blue-300 transition">Repair & Maintenance</a>
-            <a href="#research-projects" class="text-white text-2xl font-semibold hover:text-blue-300 transition">R&D</a>
-            <a href="#contact" class="text-white text-2xl font-semibold hover:text-blue-300 transition">Contact Us</a>
+            <a href="#" class="text-white text-2xl font-semibold hover:text-blue-300 transition" onclick="closeMobileMenu()">Home</a>
+            <a href="#vision-mission" class="text-white text-2xl font-semibold hover:text-blue-300 transition" onclick="closeMobileMenu()">About</a>
+            <a href="#services" class="text-white text-2xl font-semibold hover:text-blue-300 transition" onclick="closeMobileMenu()">Services</a>
+            <a href="#products" class="text-white text-2xl font-semibold hover:text-blue-300 transition" onclick="closeMobileMenu()">Our Products</a>
+            <a href="#repair" class="text-white text-2xl font-semibold hover:text-blue-300 transition" onclick="closeMobileMenu()">Repair & Maintenance</a>
+            <a href="#research-projects" class="text-white text-2xl font-semibold hover:text-blue-300 transition" onclick="closeMobileMenu()">R&D</a>
+            <a href="#contact" class="text-white text-2xl font-semibold hover:text-blue-300 transition" onclick="closeMobileMenu()">Contact Us</a>
         </nav>
     </div>
 
@@ -155,16 +196,8 @@
                     <h3 class="text-2xl font-semibold text-blue-800 mb-4">Notice Board</h3>
                     <ul class="space-y-4">
                         <li class="border-b pb-2">
-                            <p class="text-sm text-gray-500">October 11, 2025</p>
-                            <p class="text-gray-700 font-medium">New cybersecurity research launched to prevent magnetic side-channel eavesdropping from wireless audio devices.</p>
-                        </li>
-                        <li class="border-b pb-2">
                             <p class="text-sm text-gray-500">October 03, 2025</p>
                             <p class="text-gray-700 font-medium">R&D project on high-efficiency inverters has commenced.</p>
-                        </li>
-                         <li class="pb-2">
-                            <p class="text-sm text-gray-500">September 20, 2025</p>
-                            <p class="text-gray-700 font-medium">Successful deployment of our new IoT solution at a client site.</p>
                         </li>
                     </ul>
                 </div>
@@ -344,15 +377,15 @@
                 <div class="card bg-white rounded-2xl shadow-xl p-6 flex flex-col sm:flex-row items-center space-y-4 sm:space-y-0 sm:space-x-4"><img src="praveen.jpg" alt="Praveen Singh" class="rounded-full object-cover w-20 h-20 border-4 border-blue-500"><div class="text-center sm:text-left"><h3 class="text-lg font-bold text-gray-900">Mr. Praveen Singh</h3><p class="text-xs font-semibold text-blue-600">GATE 2025 Qualified</p><p class="text-sm italic text-gray-500 mt-1">Chief Executive Officer (CEO)</p><p class="text-sm text-gray-600 mt-2">B.Tech in ECE, AUS</p><p class="text-xs text-gray-500 mt-2"><strong>Research:</strong> AI, Machine Learning, Image Processing</p></div></div>
                 <div class="card bg-white rounded-2xl shadow-xl p-6 flex flex-col sm:flex-row items-center space-y-4 sm:space-y-0 sm:space-x-4"><img src="anand.jpg" alt="Anand Raj" class="rounded-full object-cover w-20 h-20 border-4 border-blue-500"><div class="text-center sm:text-left"><h3 class="text-lg font-bold text-gray-900">Mr. Anand raj</h3><p class="text-sm italic text-gray-500">Director</p><p class="text-sm text-gray-600 mt-2">B.Tech in CSE, AUS</p><p class="text-xs text-gray-500 mt-2"><strong>Research:</strong> ML, Deep Learning, Computer Vision</p></div></div>
                 <div class="card bg-white rounded-2xl shadow-xl p-6 flex flex-col sm:flex-row items-center space-y-4 sm:space-y-0 sm:space-x-4"><img src="biptu.jpg" alt="Biptu Dhar" class="rounded-full object-cover w-20 h-20 border-4 border-blue-500"><div class="text-center sm:text-left"><h3 class="text-lg font-bold text-gray-900">Mr. Biptu Dhar</h3><p class="text-sm italic text-gray-500">Core Team</p><p class="text-sm text-gray-600 mt-2">B.Tech in ETE, BVEC, Assam</p><p class="text-xs text-gray-500 mt-2"><strong>Research:</strong> Power Electronics, Power Systems, Autocad</p></div></div>
-                <div class="card bg-white rounded-2xl shadow-xl p-6 flex flex-col sm:flex-row items-center space-y-4 sm:space-y-0 sm:space-x-4"><img src="kishore.jpg" alt="Kishore Namasudra" class="rounded-full object-cover w-20 h-20 border-4 border-blue-500"><div class="text-center sm:text-left"><h3 class="text-lg font-bold text-gray-900">Mr. Kishore Namasudra</h3><p class="text-sm italic text-gray-500">Core Team</p><p class="text-sm text-gray-600 mt-2">Diploma in Mechanical Engineering</p><p class="text-xs text-gray-500 mt-2"><strong>Research:</strong> Electrical Machines</p></div></div>
-                <div class="card bg-white rounded-2xl shadow-xl p-6 flex flex-col sm:flex-row items-center space-y-4 sm:space-y-0 sm:space-x-4"><img src="ashish.jpg" alt="Ashish Kumar Das" class="rounded-full object-cover w-20 h-20 border-4 border-blue-500"><div class="text-center sm:text-left"><h3 class="text-lg font-bold text-gray-900">Mr. Ashish Kumar Das</h3><p class="text-sm italic text-gray-500">Core Team</p><p class="text-sm text-gray-600 mt-2">B.Sc. (Hons.) in Mathematics</p><p class="text-xs text-gray-500 mt-2"><strong>Research:</strong> Software Engineering</p></div></div>
+                <div class="card bg-white rounded-2xl shadow-xl p-6 flex flex-col sm:flex-row items-center space-y-4 sm:space-y-0 sm:space-x-4"><img src="kishore.jpg" alt="Kishore Namasudra" class="rounded-full object-cover w-20 h-20 border-4 border-blue-500"><div class="text-center sm:text-left"><h3 class="text-lg font-bold text-gray-900">Mr. Kishore Namasudra</h3><p class="text-sm italic text-gray-500">Core Team</p><p class="text-sm text-gray-600 mt-2">Diploma in Mechanical Engineering, Silchar Polytechnic</p><p class="text-xs text-gray-500 mt-2"><strong>Research:</strong> Electrical Machines</p></div></div>
+                <div class="card bg-white rounded-2xl shadow-xl p-6 flex flex-col sm:flex-row items-center space-y-4 sm:space-y-0 sm:space-x-4"><img src="ashish.jpg" alt="Ashish Kumar Das" class="rounded-full object-cover w-20 h-20 border-4 border-blue-500"><div class="text-center sm:text-left"><h3 class="text-lg font-bold text-gray-900">Mr. Ashish Kumar Das</h3><p class="text-sm italic text-gray-500">Core Team</p><p class="text-sm text-gray-600 mt-2">B.Sc. (Hons.) in Mathematics, G.C. College</p><p class="text-xs text-gray-500 mt-2"><strong>Research:</strong> Software Engineering</p></div></div>
             </div>
         </section>
 
         <section class="container mt-16" id="contact">
             <h2 class="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">Contact Us</h2>
             <div class="flex flex-col md:flex-row gap-8 mt-8">
-                <div class="bg-blue-950 text-white p-8 rounded-2xl shadow-lg w-full md:max-w-sm"><h3 class="text-2xl font-bold mb-6 text-white">Contact Details</h3><div class="space-y-6"><div class="flex items-start space-x-4"><div class="bg-blue-700 p-3 rounded-full flex-shrink-0"><svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" /></svg></div><div><p class="text-gray-400 text-sm">Email</p><p class="mt-1 font-semibold text-sm break-words">gopalelectronicslabs@gmail.com</p></div></div><div class="flex items-start space-x-4"><div class="bg-blue-700 p-3 rounded-full flex-shrink-0"><svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" /></svg></div><div><p class="text-gray-400 text-sm">Phone</p><p class="mt-1 font-semibold text-sm">+91 6002129253</p></div></div></div><div class="mt-8 pt-8 border-t border-gray-700"><h3 class="text-2xl font-bold mb-4">Office Address</h3><p class="mb-4 text-gray-300 text-sm leading-relaxed"><strong>R&D Center</strong><br>Gopal Electronics Pvt. Ltd.,<br>barjalenga grant,barjalenga <br>Dist. Cachar, Assam 788117<br><a href="https://www.google.com/maps" target="_blank" class="text-blue-400 hover:underline">View on Google Maps</a></p><p class="text-gray-300 text-sm leading-relaxed"><strong>Registered Office</strong><br>Borjalenga mahabirchara road, MP9M+VJ5<br>Bor Jalenga Grant, Dist Cachar, 788117<br><a href="https://www.google.com/maps" target="_blank" class="text-blue-400 hover:underline">View on Google Maps</a></p></div></div>
+                <div class="bg-blue-950 text-white p-8 rounded-2xl shadow-lg w-full md:max-w-sm"><h3 class="text-2xl font-bold mb-6 text-white">Contact Details</h3><div class="space-y-6"><div class="flex items-start space-x-4"><div class="bg-blue-700 p-3 rounded-full flex-shrink-0"><svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" /></svg></div><div><p class="text-gray-400 text-sm">Email</p><p class="mt-1 font-semibold text-sm break-words">gopalelectronicslabs@gmail.com</p></div></div><div class="flex items-start space-x-4"><div class="bg-blue-700 p-3 rounded-full flex-shrink-0"><svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" /></svg></div><div><p class="text-gray-400 text-sm">Phone</p><p class="mt-1 font-semibold text-sm">+91 6002129253</p></div></div></div><div class="mt-8 pt-8 border-t border-gray-700"><h3 class="text-2xl font-bold mb-4">Office Address</h3><p class="mb-4 text-gray-300 text-sm leading-relaxed"><strong>R&D Center</strong><br>Gopal Electronics Pvt. Ltd.,<br>barjalenga grant,barjalenga <br>Dist. Cachar, Assam 788117<br><a href="https://maps.app.goo.gl/a6KZ71a8mJ9Gj9136" target="_blank" class="text-blue-400 hover:underline">View on Google Maps</a></p><p class="text-gray-300 text-sm leading-relaxed"><strong>Registered Office</strong><br>Borjalenga mahabirchara road, MP9M+VJ5<br>Bor Jalenga Grant, Dist Cachar, 788117<br><a href="https://maps.app.goo.gl/a6KZ71a8mJ9Gj9136" target="_blank" class="text-blue-400 hover:underline">View on Google Maps</a></p></div></div>
                 <div id="message-us" class="contact-form p-8 bg-white rounded-2xl shadow-lg w-full">
                     <h3 class="text-2xl font-bold text-gray-900 mb-6">Send us a message</h3>
                     <form id="contact-form">
@@ -378,12 +411,47 @@
         </section>
     </main>
 
-    <footer class="bg-blue-900 text-white text-center py-8 px-4">
-        <div class="container"><p class="text-sm">© 2025 Gopal Electronics Pvt. Ltd. All Rights Reserved.</p></div>
+    <footer class="bg-blue-900 text-white py-8 px-4">
+        <div class="container flex justify-between items-center">
+            <button id="policy-btn-all" class="text-sm text-slate-300 hover:text-white transition bg-transparent border-none">Website Policies</button>
+            <div class="text-center">
+                <p class="text-sm">© 2025 Gopal Electronics Pvt. Ltd. All Rights Reserved.</p>
+            </div>
+            <div class="text-right">
+                <p class="text-sm">Site Designed & Maintained by Gopal Electronics private limited</p>
+            </div>
+        </div>
     </footer>
 
     <script>
     document.addEventListener('DOMContentLoaded', () => {
+        const policyData = {
+            en: {
+                all: {
+                    title: "Website Policies",
+                },
+                disclaimer: {
+                    title: "Disclaimer",
+                    content: "This website is designed, developed, and maintained by Gopal Electronics Pvt. Ltd. Though all efforts have been made to ensure the accuracy of the content on this website, it should not be construed as a statement of law or used for any legal purposes. Gopal Electronics Pvt. Ltd. accepts no responsibility in relation to the accuracy, completeness, or usefulness of the contents. Users are advised to verify any information and to obtain appropriate professional advice before acting on the information provided. In no event will Gopal Electronics Pvt. Ltd. be liable for any expense, loss, or damage, including indirect or consequential loss or damage, whatsoever arising from the use of this website. Links to other websites included here are provided for public convenience only. Gopal Electronics Pvt. Ltd. is not responsible for the contents or reliability of linked websites and does not necessarily endorse the views expressed within them. These terms and conditions shall be governed by and construed in accordance with Indian Laws. Any dispute arising under these terms shall be subject to the exclusive jurisdiction of the courts of India."
+                },
+                linking: {
+                    title: "Linking Policy",
+                    content: "<strong>Links to other websites from our website:</strong> At many places on this website, you may find links to other websites or portals. These links have been placed for your convenience. Gopal Electronics Pvt. Ltd. is not responsible for the contents and reliability of the linked websites and does not necessarily endorse the views expressed in them. The mere presence of the link should not be assumed as an endorsement of any kind. We cannot guarantee that these links will work all the time and have no control over the availability of linked pages.<br><br><strong>Links to our website from other websites:</strong> We welcome you to link directly to the information hosted on our website. However, we do not permit our pages to be loaded into frames on your site. The pages belonging to our website must load into a newly opened browser window of the user."
+                },
+                privacy: {
+                    title: "Privacy Policy",
+                    content: "This website does not automatically capture any specific personal information from you (like name, phone number, or e-mail address) that allows us to identify you individually. You can visit this site without revealing any personal information. However, should you choose to provide information through our contact form, it will only be used for the purpose of responding to your inquiry. Your information will not be shared with any third party, except when required by a law enforcement agency. This site does not use cookies.<br><br><em>Note: The use of the term “Personal Information” in this privacy statement refers to any information from which your identity is apparent or can be reasonably ascertained.</em>"
+                },
+                copyright: {
+                    title: "Copyright Policy",
+                    content: "The contents of this website may not be reproduced partially or fully without due permission from Gopal Electronics Pvt. Ltd. If permission is granted, the source must be appropriately acknowledged. The contents of this website cannot be used in any misleading or objectionable context."
+                },
+                accessibility: {
+                    title: "Accessibility Statement",
+                    content: "We are committed to ensuring that this website is accessible to all users, irrespective of the device, technology, or ability. It has been built with the aim of providing maximum accessibility and usability to its visitors. We have put in our best efforts to ensure that all information on this website is accessible. For example, a user with a visual disability can access this website using assistive technologies, such as screen readers. This website is compatible with various screen readers. This website includes the following accessibility features: Font Size Controls, High Contrast Mode, and a 'Skip to Main Content' link for keyboard users."
+                }
+            }
+        };
 
         const productData = {
             transformers: {
@@ -432,10 +500,52 @@
             }
         };
 
+        const htmlEl = document.documentElement;
+        const bodyEl = document.body;
+        const fontIncBtn = document.getElementById('font-inc');
+        const fontDecBtn = document.getElementById('font-dec');
+        const fontResetBtn = document.getElementById('font-reset');
+        const defaultFontSize = 16; 
+
+        const changeFontSize = (amount) => {
+            let currentSize = parseFloat(window.getComputedStyle(htmlEl).fontSize);
+            htmlEl.style.fontSize = `${currentSize + amount}px`;
+        };
+
+        fontIncBtn.addEventListener('click', () => changeFontSize(1));
+        fontDecBtn.addEventListener('click', () => changeFontSize(-1));
+        fontResetBtn.addEventListener('click', () => {
+            htmlEl.style.fontSize = `${defaultFontSize}px`;
+        });
+        
+        const policyModal = document.getElementById('policy-modal');
+        const policyContent = document.getElementById('policy-modal-content');
+        const policyBtnAll = document.getElementById('policy-btn-all');
+
+        const openPolicyModal = () => {
+            let content = '';
+            const policyOrder = ['disclaimer', 'linking', 'privacy', 'copyright', 'accessibility'];
+            content = policyOrder.map(key => {
+                const item = policyData.en[key];
+                return `<div class="mb-6"><h3 class="text-2xl font-bold text-blue-800 mb-4">${item.title}</h3><p class="text-gray-600">${item.content}</p></div>`;
+            }).join('');
+            
+            policyContent.innerHTML = content;
+            policyModal.style.display = 'flex';
+        };
+
+        policyBtnAll.addEventListener('click', (e) => {
+            e.preventDefault();
+            openPolicyModal();
+        });
+
+        window.closeModal = (modalId) => {
+            document.getElementById(modalId).style.display = 'none';
+        };
+        
         const productModal = document.getElementById('product-details-modal');
         const productModalTitle = document.getElementById('product-modal-title');
         const productModalDetails = document.getElementById('product-modal-details');
-        const closeProductModalBtn = document.getElementById('close-product-modal');
         const productCards = document.querySelectorAll('.product-card');
 
         productCards.forEach(card => {
@@ -457,17 +567,6 @@
                     productModal.style.display = 'flex';
                 }
             });
-        });
-
-        function closeProductModal() {
-            productModal.style.display = 'none';
-        }
-        closeProductModalBtn.addEventListener('click', closeProductModal);
-        
-        productModal.addEventListener('click', (event) => {
-            if (event.target === productModal) {
-                closeProductModal();
-            }
         });
 
         let correctCaptchaAnswer;
@@ -496,14 +595,9 @@
             modal.style.display = 'flex';
         }
 
-        window.closeModal = function() { 
-            document.getElementById('message-modal').style.display = 'none';
-        }
-
         const mobileMenuBtn = document.getElementById('mobile-menu-btn');
         const closeMenuBtn = document.getElementById('close-menu-btn');
         const mobileMenuOverlay = document.getElementById('mobile-menu-overlay');
-        const mobileNavLinks = document.querySelectorAll('#mobile-menu-overlay nav a');
 
         function openMobileMenu() {
             mobileMenuOverlay.classList.remove('-translate-x-full');
@@ -515,9 +609,6 @@
 
         mobileMenuBtn.addEventListener('click', openMobileMenu);
         closeMenuBtn.addEventListener('click', closeMobileMenu);
-        mobileNavLinks.forEach(link => {
-            link.addEventListener('click', closeMobileMenu);
-        });
 
         generateCaptcha();
 
@@ -624,4 +715,4 @@
     </script>
 
 </body>
-</html> 
+</html>
