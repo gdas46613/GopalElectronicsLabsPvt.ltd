@@ -6,7 +6,7 @@
     <title>Gopal Electronics Pvt. Ltd.</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
         :root {
@@ -57,12 +57,93 @@
         .section-padding { padding: 4rem 1.5rem; }
         .product-card { cursor: pointer; }
 
+        /* --- Admin Panel Styles --- */
+        #admin-dashboard {
+            display: none;
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 350px;
+            background: white;
+            border: 2px solid #2563eb;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+            border-radius: 12px;
+            z-index: 9999;
+            padding: 20px;
+            font-size: 0.9rem;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+        #admin-dashboard.active { display: block; }
+        .admin-btn { cursor: pointer; color: #2563eb; font-weight: bold; font-size: 0.8rem; margin-left: 10px;}
+        
+        /* Delete Button Style (Admin Only) */
+        .admin-del-btn {
+            position: absolute;
+            top: -10px;
+            right: -10px;
+            background: #ef4444;
+            color: white;
+            border: 2px solid white;
+            border-radius: 50%;
+            width: 24px;
+            height: 24px;
+            font-size: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+            z-index: 50;
+        }
+        .admin-del-btn:hover { background: #dc2626; }
+
+        /* Edit Button Style (Admin Only) */
+        .admin-edit-btn {
+            position: absolute;
+            top: -10px;
+            right: 20px; /* Positioned to the left of the delete button */
+            background: #f59e0b; /* Amber/Orange color */
+            color: white;
+            border: 2px solid white;
+            border-radius: 50%;
+            width: 24px;
+            height: 24px;
+            font-size: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+            z-index: 50;
+        }
+        .admin-edit-btn:hover { background: #d97706; }
+
+        /* Ensure parents of delete/edit buttons are positioned correctly */
+        .relative-group { position: relative; }
+
         /* --- Custom Animation Styles --- */
         .highlight-active { transform: scale(1.03); box-shadow: 0 10px 40px rgba(13, 71, 161, 0.2); transition: transform 0.6s ease-out, box-shadow 0.6s ease-out; }
        
         .tech-symbol { position: absolute; top: -50px; user-select: none; z-index: 10; font-size: 2rem; color: var(--muted); opacity: 0.7; animation: fall linear; }
         @keyframes fall {
             to { transform: translateY(105vh) rotate(270deg); opacity: 0; }
+        }
+
+        /* --- Scrolling Text Animation --- */
+        .scrolling-container {
+            width: 100%;
+            overflow: hidden;
+            white-space: nowrap;
+        }
+        .scrolling-text {
+            display: inline-block;
+            padding-left: 100%;
+            animation: scroll-left 20s linear infinite;
+        }
+        @keyframes scroll-left {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-100%); }
         }
 
         /* --- Header Font Controls --- */
@@ -97,7 +178,7 @@
 
     <svg style="display:none;">
         <filter id="water-vibrate-filter">
-            <feTurbulence type="fractalNoise" baseFrequency="0.01 0.03" numOctaves="1" result="turbulence" seed="0"></feTurbulence>
+            <feTurbulence type="fractalNoise" baseFrequency="0.01 0.03" numOctaves="1" result="turbulence" seed="291.58000000002477"></feTurbulence>
             <feDisplacementMap in2="turbulence" in="SourceGraphic" scale="15" xChannelSelector="R" yChannelSelector="G"></feDisplacementMap>
         </filter>
     </svg>
@@ -107,6 +188,57 @@
             <div id="modal-icon" class="text-4xl mb-4"></div>
             <p id="modal-message" class="text-lg font-semibold mb-4"></p>
             <button onclick="closeModal('message-modal')" class="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition">Close</button>
+        </div>
+    </div>
+
+    <div id="admin-login-modal" class="modal" style="display: none;">
+        <div class="modal-content !text-center" style="width: 400px;">
+            <h3 class="text-2xl font-bold mb-4 text-blue-900">Admin Login</h3>
+            <input type="password" id="admin-password-input" placeholder="Enter Password" class="w-full p-3 border rounded-lg mb-4">
+            <button onclick="attemptAdminLogin()" class="w-full px-6 py-3 bg-blue-900 text-white font-bold rounded-lg hover:bg-blue-800 transition">Login</button>
+            <button onclick="closeModal('admin-login-modal')" class="mt-4 text-gray-500 text-sm">Cancel</button>
+        </div>
+    </div>
+
+    <div id="admin-dashboard" class="">
+        <div class="flex justify-between items-center mb-4 pb-2 border-b">
+            <h3 class="font-bold text-lg text-blue-900">Admin Controls</h3>
+            <button onclick="closeAdminDashboard()" class="text-red-500 font-bold">X</button>
+        </div>
+        
+        <div class="mb-4">
+            <label class="block text-xs font-bold text-gray-600 mb-1">Update Scrolling Message:</label>
+            <textarea id="admin-marquee-input" class="w-full p-2 border rounded text-xs" rows="2"></textarea>
+            <button onclick="updateMarquee()" class="mt-1 bg-blue-100 text-blue-700 px-3 py-1 rounded text-xs font-bold hover:bg-blue-200 w-full">Update Message</button>
+        </div>
+
+        <div class="mb-4 pt-4 border-t">
+            <label class="block text-xs font-bold text-gray-600 mb-1">Add to Notice Board:</label>
+            <input type="text" id="admin-notice-date" placeholder="Date (e.g., Oct 05, 2025)" class="w-full p-2 border rounded text-xs mb-2">
+            <textarea id="admin-notice-text" placeholder="Notice details..." class="w-full p-2 border rounded text-xs mb-2" rows="2"></textarea>
+            <button onclick="addNotice()" class="bg-purple-100 text-purple-700 px-3 py-1 rounded text-xs font-bold hover:bg-purple-200 w-full">Add Notice</button>
+            <p class="text-[10px] text-gray-400 mt-1">* Use the orange '✎' button to edit existing notices.</p>
+        </div>
+
+        <div class="mb-4 pt-4 border-t">
+            <label class="block text-xs font-bold text-gray-600 mb-1">Add New Project:</label>
+            <input type="text" id="admin-proj-title" placeholder="Project Title" class="w-full p-2 border rounded text-xs mb-2">
+            <input type="text" id="admin-proj-desc" placeholder="Short Description" class="w-full p-2 border rounded text-xs mb-2">
+            <input type="text" id="admin-proj-link" placeholder="Download Link (Google Drive/URL)" class="w-full p-2 border rounded text-xs mb-2">
+            
+            <div class="flex gap-2">
+                <select id="admin-proj-status" class="w-1/2 p-2 border rounded text-xs">
+                    <option value="Available">Available</option>
+                    <option value="Coming Soon">Coming Soon</option>
+                </select>
+                <button onclick="addProject()" class="w-1/2 bg-green-100 text-green-700 px-3 py-1 rounded text-xs font-bold hover:bg-green-200">Add Project</button>
+            </div>
+            <p class="text-[10px] text-gray-400 mt-1">* Use the orange '✎' button to edit existing projects.</p>
+        </div>
+
+        <div class="pt-4 border-t">
+            <p class="text-xs text-gray-500 italic mb-2">When finished, download the new file and upload it to your host.</p>
+            <button onclick="saveAndDownload()" class="w-full bg-blue-600 text-white px-4 py-2 rounded font-bold hover:bg-blue-700">💾 Save & Download Site</button>
         </div>
     </div>
 
@@ -129,7 +261,6 @@
         </div>
     </div>
 
-
     <header class="bg-slate-900 text-white shadow-lg sticky top-0 z-50">
         <div class="container mx-auto flex items-center justify-between p-4">
             <div>
@@ -140,9 +271,10 @@
                 <a href="#" class="text-sm font-medium text-slate-300 hover:text-white transition">Home</a>
                 <a href="#vision-mission" class="text-sm font-medium text-slate-300 hover:text-white transition">About</a>
                 <a href="#services" class="text-sm font-medium text-slate-300 hover:text-white transition">Services</a>
-                <a href="#products" class="text-sm font-medium text-slate-300 hover:text-white transition">Our Products</a>
-                <a href="#repair" class="text-sm font-medium text-slate-300 hover:text-white transition">Repair & Maintenance</a>
+                <a href="#products" class="text-sm font-medium text-slate-300 hover:text-white transition">Products</a>
+                <a href="#repair" class="text-sm font-medium text-slate-300 hover:text-white transition">Repair</a>
                 <a href="#research-projects" class="text-sm font-medium text-slate-300 hover:text-white transition">R&D</a>
+                <a href="#downloads" class="text-sm font-medium text-slate-300 hover:text-white transition">Resources</a>
                 <a href="#contact" class="text-sm font-medium text-slate-300 hover:text-white transition">Contact Us</a>
                 <div class="font-controls flex items-center gap-2">
                     <button id="font-dec">A-</button>
@@ -151,7 +283,7 @@
                 </div>
             </nav>
             <button id="mobile-menu-btn" class="text-white focus:outline-none md:hidden p-2 rounded-md">
-                <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7" /></svg>
+                <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg>
             </button>
         </div>
     </header>
@@ -159,26 +291,30 @@
     <div id="mobile-menu-overlay" class="fixed inset-0 bg-slate-900 bg-opacity-95 z-50 transform -translate-x-full transition-transform duration-300 md:hidden">
         <div class="flex justify-end p-6">
             <button id="close-menu-btn" class="text-white focus:outline-none p-2 rounded-md">
-                <svg class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" /></svg>
+                <svg class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
             </button>
         </div>
         <nav class="flex flex-col items-center space-y-8 pt-12">
             <a href="#" class="text-white text-2xl font-semibold hover:text-blue-300 transition" onclick="closeMobileMenu()">Home</a>
             <a href="#vision-mission" class="text-white text-2xl font-semibold hover:text-blue-300 transition" onclick="closeMobileMenu()">About</a>
             <a href="#services" class="text-white text-2xl font-semibold hover:text-blue-300 transition" onclick="closeMobileMenu()">Services</a>
-            <a href="#products" class="text-white text-2xl font-semibold hover:text-blue-300 transition" onclick="closeMobileMenu()">Our Products</a>
-            <a href="#repair" class="text-white text-2xl font-semibold hover:text-blue-300 transition" onclick="closeMobileMenu()">Repair & Maintenance</a>
+            <a href="#products" class="text-white text-2xl font-semibold hover:text-blue-300 transition" onclick="closeMobileMenu()">Products</a>
+            <a href="#repair" class="text-white text-2xl font-semibold hover:text-blue-300 transition" onclick="closeMobileMenu()">Repair</a>
             <a href="#research-projects" class="text-white text-2xl font-semibold hover:text-blue-300 transition" onclick="closeMobileMenu()">R&D</a>
+            <a href="#downloads" class="text-white text-2xl font-semibold hover:text-blue-300 transition" onclick="closeMobileMenu()">Resources</a>
             <a href="#contact" class="text-white text-2xl font-semibold hover:text-blue-300 transition" onclick="closeMobileMenu()">Contact Us</a>
         </nav>
     </div>
 
     <main>
-        <section id="welcome-section" class="relative bg-cover bg-center py-24" style="background-image: url('header-background.jpg');">
-            <div class="absolute inset-0 bg-slate-800 bg-opacity-60"></div>
+        <section id="welcome-section" class="relative bg-cover bg-center h-screen flex items-center justify-center" style="background-image: url('header-background.jpg'); background-attachment: fixed;">
+            <div class="absolute inset-0 bg-slate-800 bg-opacity-40"></div>
             <div class="container mx-auto relative z-10 text-center text-white">
-                <h2 class="text-4xl font-bold tracking-tight sm:text-5xl text-white" style="border: none;">Welcome to Gopal Electronics</h2>
-                <p class="mt-4 text-lg text-slate-200 max-w-4xl mx-auto">Innovating today for a smarter, more sustainable tomorrow. We are dedicated to pioneering advancements in technology and research that shape the future of industries and improve lives globally.</p>
+                <h2 class="text-5xl font-extrabold tracking-tight sm:text-6xl text-white drop-shadow-lg" style="border: none;">Welcome to Gopal Electronics</h2>
+                <p class="mt-6 text-xl text-slate-100 max-w-4xl mx-auto drop-shadow-md font-medium">Innovating today for a smarter, more sustainable tomorrow. We are dedicated to pioneering advancements in technology and research that shape the future of industries and improve lives globally.</p>
+                <div class="mt-8">
+                     <a href="#contact" class="px-8 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-full font-semibold transition shadow-lg transform hover:scale-105">Get in Touch</a>
+                </div>
             </div>
         </section>
        
@@ -194,8 +330,8 @@
                 </div>
                 <div class="p-8 bg-white rounded-2xl shadow-xl border border-gray-100">
                     <h3 class="text-2xl font-semibold text-blue-800 mb-4">Notice Board</h3>
-                    <ul class="space-y-4">
-                        <li class="border-b pb-2">
+                    <ul id="notice-board-list" class="space-y-4">
+                        <li class="border-b pb-2 relative-group">
                             <p class="text-sm text-gray-500">October 03, 2025</p>
                             <p class="text-gray-700 font-medium">R&D project on high-efficiency inverters has commenced.</p>
                         </li>
@@ -205,7 +341,7 @@
         </section>
 
         <section class="container mt-16" id="vision-mission">
-            <div id="vision-mission-card" class="bg-white rounded-2xl shadow-xl border border-gray-100 p-8 mt-8">
+             <div id="vision-mission-card" class="bg-white rounded-2xl shadow-xl border border-gray-100 p-8 mt-8 highlight-active">
                 <h3 class="text-2xl font-semibold text-blue-800 mb-4">Our Vision</h3>
                 <p class="text-gray-600 mb-6">To become a global leader in advanced electronics and interdisciplinary research, driving innovation that empowers industries, improves quality of life, and fosters a sustainable future.</p>
                 <h3 class="text-2xl font-semibold text-blue-800 mb-4">Our Mission</h3>
@@ -220,7 +356,7 @@
         </section>
 
         <section class="container mt-16" id="services">
-            <h2 id="services-heading" class="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">Our Services</h2>
+            <h2 id="services-heading" class="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl" style="filter: url("#water-vibrate-filter");">Our Services</h2>
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mt-8">
                 <div class="p-6 bg-blue-50 rounded-2xl shadow-md border border-gray-100 flex items-center justify-center text-center font-semibold text-blue-800">3D Printing & Prototyping</div>
                 <div class="p-6 bg-blue-50 rounded-2xl shadow-md border border-gray-100 flex items-center justify-center text-center font-semibold text-blue-800">Custom PCB Design & Fabrication</div>
@@ -238,7 +374,7 @@
         </section>
 
         <section id="products" class="py-16 bg-blue-50 mt-16">
-            <div class="container mx-auto">
+             <div class="container mx-auto">
                 <div class="text-center mb-12">
                     <h2 class="text-3xl font-bold tracking-tight text-blue-900 sm:text-4xl" style="border: none; margin-bottom: 0.5rem;">Our Products</h2>
                     <div class="w-24 h-1 bg-blue-500 mx-auto"></div>
@@ -247,28 +383,28 @@
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
                     <div class="product-card bg-white p-6 rounded-2xl shadow-lg border border-gray-200 border-t-4 border-blue-500 transition hover:-translate-y-2 hover:shadow-xl" data-product-key="transformers">
                         <div class="flex items-center space-x-4">
-                            <div class="bg-blue-100 p-3 rounded-full"><svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z" /></svg></div>
+                            <div class="bg-blue-100 p-3 rounded-full"><svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg></div>
                             <h3 class="text-xl font-bold text-blue-800">Transformers</h3>
                         </div>
                         <p class="text-gray-700 mt-4 italic">Click to see the full range of transformers we supply.</p>
                     </div>
                     <div class="product-card bg-white p-6 rounded-2xl shadow-lg border border-gray-200 border-t-4 border-blue-500 transition hover:-translate-y-2 hover:shadow-xl" data-product-key="powerConversion">
                         <div class="flex items-center space-x-4">
-                            <div class="bg-blue-100 p-3 rounded-full"><svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 3v2m6-2v2M9 19v2m6-2v2M5 9H3m2 6H3m18-6h-2m2 6h-2M12 6V3m0 18v-3" /></svg></div>
+                            <div class="bg-blue-100 p-3 rounded-full"><svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 3v2m6-2v2M9 19v2m6-2v2M5 9H3m2 6H3m18-6h-2m2 6h-2M12 6V3m0 18v-3"></path></svg></div>
                             <h3 class="text-xl font-bold text-blue-800">Power Conversion & Control</h3>
                         </div>
                         <p class="text-gray-700 mt-4 italic">Includes converters, drivers, contactors, and more.</p>
                     </div>
                     <div class="product-card bg-white p-6 rounded-2xl shadow-lg border border-gray-200 border-t-4 border-blue-500 transition hover:-translate-y-2 hover:shadow-xl" data-product-key="specializedEquipment">
                         <div class="flex items-center space-x-4">
-                            <div class="bg-blue-100 p-3 rounded-full"><svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4h4" /></svg></div>
+                            <div class="bg-blue-100 p-3 rounded-full"><svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4h4"></path></svg></div>
                             <h3 class="text-xl font-bold text-blue-800">Specialized Equipment</h3>
                         </div>
                         <p class="text-gray-700 mt-4 italic">Custom solutions for industrial and automotive needs.</p>
                     </div>
                     <div class="product-card bg-white p-6 rounded-2xl shadow-lg border border-gray-200 border-t-4 border-blue-500 transition hover:-translate-y-2 hover:shadow-xl" data-product-key="electricalInfrastructure">
                         <div class="flex items-center space-x-4">
-                            <div class="bg-blue-100 p-3 rounded-full"><svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z" /></svg></div>
+                            <div class="bg-blue-100 p-3 rounded-full"><svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z"></path></svg></div>
                             <h3 class="text-xl font-bold text-blue-800">Electrical Infrastructure</h3>
                         </div>
                         <p class="text-gray-700 mt-4 italic">Components for complete electrical installations.</p>
@@ -368,42 +504,82 @@
             </div>
         </section>
 
+        <section class="container mt-16" id="downloads">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">Projects & Resources</h2>
+                <p class="text-center max-w-3xl mx-auto mb-8 text-gray-600">Access project files, source code, and schematics uploaded by our research team.</p>
+            </div>
+            
+            <div id="downloads-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div class="bg-white p-6 rounded-2xl shadow-lg border border-gray-200 hover:shadow-xl transition relative-group">
+                <div class="flex items-start justify-between">
+                    <div class="bg-blue-100 p-3 rounded-lg text-blue-600"><svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg></div>
+                    <span class="bg-green-100 text-green-800 text-xs font-semibold px-2.5 py-0.5 rounded">Available</span>
+                </div>
+                <h3 class="text-xl font-bold text-gray-900 mt-4">radar ecg</h3>
+                <p class="text-sm text-gray-600 mt-2">System Core: This is a non-contact vital signs monitor built using a SeeedStudio MR60BHA2 60GHz mmWave radar connected to an ESP32 microcontroller.  Measurement Method: It detects minute chest wall vibrations (Ballistocardiography) using radar reflections to measure Heart Rate and Respiratory Rate without any skin contact.  Output: The ESP32 processes the sensor data and hosts a WiFi web server to visualize real-time health metrics on a phone or computer browser.</p>
+                <a href="https://drive.google.com/file/d/1vOW7ElgX9ZLrMLksNOjEoWTlw-ZpRxOE/view?usp=drive_link" class="mt-4 inline-flex items-center text-blue-600 hover:text-blue-800 font-medium">
+                    Download File <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
+                </a>
+            </div><div class="bg-white p-6 rounded-2xl shadow-lg border border-gray-200 hover:shadow-xl transition relative-group">
+                <div class="flex items-start justify-between">
+                    <div class="bg-blue-100 p-3 rounded-lg text-blue-600"><svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg></div>
+                    <span class="bg-green-100 text-green-800 text-xs font-semibold px-2.5 py-0.5 rounded">Available</span>
+                </div>
+                <h3 class="text-xl font-bold text-gray-900 mt-4">Image Enhancement / Fog Removal / Image Dehazing</h3>
+                <p class="text-sm text-gray-600 mt-2">This project focuses on removing fog/haze and enhancing visibility in traffic signal and traffic sign board images using Python. Hazy conditions reduce visibility and affect road safety, making image enhancement essential for traffic monitoring systems, autonomous vehicles, and surveillance</p>
+                <a href="https://drive.google.com/file/d/1fJxlaUhz4FcSJwolfOsLMmpAeWGWgi5d/view?usp=drive_link" class="mt-4 inline-flex items-center text-blue-600 hover:text-blue-800 font-medium">
+                    Download File <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
+                </a>
+            </div></div>
+            <p class="text-center text-gray-500 mt-6 text-sm">Note: To upload new project files, use the Admin panel below.</p>
+        </section>
+
         <section class="container mt-16" id="engineers">
             <h2 class="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">Our Engineers</h2>
             <p class="text-center text-gray-600 max-w-3xl mx-auto">Meet the skilled engineers driving innovation and excellence at Gopal Electronics Pvt. Ltd. Our team is composed of passionate experts dedicated to pushing the boundaries of technology.</p>
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mt-8">
-                <div class="card bg-white rounded-2xl shadow-xl p-6 flex flex-col sm:flex-row items-center space-y-4 sm:space-y-0 sm:space-x-4"><img src="founder.jpg" alt="Loknath Das" class="rounded-full object-cover w-20 h-20 border-4 border-blue-500"><div class="text-center sm:text-left"><h3 class="text-lg font-bold text-gray-900">Mr. Loknath Das</h3><p class="text-xs font-semibold text-blue-600">GATE 2025 Qualified</p><p class="text-sm italic text-gray-500 mt-1">Founder</p><p class="text-sm text-gray-600 mt-2">B.Tech in ECE, AUS</p><p class="text-xs text-gray-500 mt-2"><strong>Research:</strong> VLSI, IoT, Embedded Systems, Antenna Design</p></div></div>
-                <div class="card bg-white rounded-2xl shadow-xl p-6 flex flex-col sm:flex-row items-center space-y-4 sm:space-y-0 sm:space-x-4"><img src="rajeev.jpg" alt="Rajeev Ranjan" class="rounded-full object-cover w-20 h-20 border-4 border-blue-500"><div class="text-center sm:text-left"><h3 class="text-lg font-bold text-gray-900">Mr. Rajeev Ranjan</h3><p class="text-sm italic text-gray-500">Co-Founder</p><p class="text-sm text-gray-600 mt-2">B.Tech in CSE, AUS</p><p class="text-xs text-gray-500 mt-2"><strong>Research:</strong> Software Engineering</p></div></div>
-                <div class="card bg-white rounded-2xl shadow-xl p-6 flex flex-col sm:flex-row items-center space-y-4 sm:space-y-0 sm:space-x-4"><img src="praveen.jpg" alt="Praveen Singh" class="rounded-full object-cover w-20 h-20 border-4 border-blue-500"><div class="text-center sm:text-left"><h3 class="text-lg font-bold text-gray-900">Mr. Praveen Singh</h3><p class="text-xs font-semibold text-blue-600">GATE 2025 Qualified</p><p class="text-sm italic text-gray-500 mt-1">Chief Executive Officer (CEO)</p><p class="text-sm text-gray-600 mt-2">B.Tech in ECE, AUS</p><p class="text-xs text-gray-500 mt-2"><strong>Research:</strong> AI, Machine Learning, Image Processing</p></div></div>
-                <div class="card bg-white rounded-2xl shadow-xl p-6 flex flex-col sm:flex-row items-center space-y-4 sm:space-y-0 sm:space-x-4"><img src="anand.jpg" alt="Anand Raj" class="rounded-full object-cover w-20 h-20 border-4 border-blue-500"><div class="text-center sm:text-left"><h3 class="text-lg font-bold text-gray-900">Mr. Anand raj</h3><p class="text-sm italic text-gray-500">Director</p><p class="text-sm text-gray-600 mt-2">B.Tech in CSE, AUS</p><p class="text-xs text-gray-500 mt-2"><strong>Research:</strong> ML, Deep Learning, Computer Vision</p></div></div>
-                <div class="card bg-white rounded-2xl shadow-xl p-6 flex flex-col sm:flex-row items-center space-y-4 sm:space-y-0 sm:space-x-4"><img src="biptu.jpg" alt="Biptu Dhar" class="rounded-full object-cover w-20 h-20 border-4 border-blue-500"><div class="text-center sm:text-left"><h3 class="text-lg font-bold text-gray-900">Mr. Biptu Dhar</h3><p class="text-sm italic text-gray-500">Core Team</p><p class="text-sm text-gray-600 mt-2">B.Tech in ETE, BVEC, Assam</p><p class="text-xs text-gray-500 mt-2"><strong>Research:</strong> Power Electronics, Power Systems, Autocad</p></div></div>
-                <div class="card bg-white rounded-2xl shadow-xl p-6 flex flex-col sm:flex-row items-center space-y-4 sm:space-y-0 sm:space-x-4"><img src="kishore.jpg" alt="Kishore Namasudra" class="rounded-full object-cover w-20 h-20 border-4 border-blue-500"><div class="text-center sm:text-left"><h3 class="text-lg font-bold text-gray-900">Mr. Kishore Namasudra</h3><p class="text-sm italic text-gray-500">Core Team</p><p class="text-sm text-gray-600 mt-2">Diploma in Mechanical Engineering, Silchar Polytechnic</p><p class="text-xs text-gray-500 mt-2"><strong>Research:</strong> Electrical Machines</p></div></div>
-                <div class="card bg-white rounded-2xl shadow-xl p-6 flex flex-col sm:flex-row items-center space-y-4 sm:space-y-0 sm:space-x-4"><img src="ashish.jpg" alt="Ashish Kumar Das" class="rounded-full object-cover w-20 h-20 border-4 border-blue-500"><div class="text-center sm:text-left"><h3 class="text-lg font-bold text-gray-900">Mr. Ashish Kumar Das</h3><p class="text-sm italic text-gray-500">Core Team</p><p class="text-sm text-gray-600 mt-2">B.Sc. (Hons.) in Mathematics, G.C. College</p><p class="text-xs text-gray-500 mt-2"><strong>Research:</strong> Software Engineering</p></div></div>
+                <div class="card bg-white rounded-2xl shadow-xl p-6 flex flex-col sm:flex-row items-center space-y-4 sm:space-y-0 sm:space-x-4"><img src="founder.jpg" alt="Loknath Das" class="rounded-full object-cover w-20 h-20 border-4 border-blue-500"><div class="text-center sm:text-left"><h3 class="text-lg font-bold text-gray-900">Mr. Loknath Das</h3><p class="text-xs font-semibold text-blue-600">GATE 2025 Qualified</p><p class="text-sm italic text-gray-500 mt-1">Founder</p><p class="text-sm text-gray-600 mt-2">B.Tech in ECE, AUS</p><p class="text-xs text-gray-500 mt-2"><strong>Research Area:</strong> VLSI, IoT, Embedded Systems, Antenna Design</p></div></div>
+                <div class="card bg-white rounded-2xl shadow-xl p-6 flex flex-col sm:flex-row items-center space-y-4 sm:space-y-0 sm:space-x-4"><img src="rajeev.jpg" alt="Rajeev Ranjan" class="rounded-full object-cover w-20 h-20 border-4 border-blue-500"><div class="text-center sm:text-left"><h3 class="text-lg font-bold text-gray-900">Mr. Rajeev Ranjan</h3><p class="text-sm italic text-gray-500">Co-Founder</p><p class="text-sm text-gray-600 mt-2">B.Tech in CSE, AUS</p><p class="text-xs text-gray-500 mt-2"><strong>Research Area:</strong> Software Engineering</p></div></div>
+                <div class="card bg-white rounded-2xl shadow-xl p-6 flex flex-col sm:flex-row items-center space-y-4 sm:space-y-0 sm:space-x-4"><img src="praveen.jpg" alt="Praveen Singh" class="rounded-full object-cover w-20 h-20 border-4 border-blue-500"><div class="text-center sm:text-left"><h3 class="text-lg font-bold text-gray-900">Mr. Praveen Singh</h3><p class="text-xs font-semibold text-blue-600">GATE 2025 Qualified</p><p class="text-sm italic text-gray-500 mt-1">Chief Executive Officer (CEO)</p><p class="text-sm text-gray-600 mt-2">B.Tech in ECE, AUS</p><p class="text-xs text-gray-500 mt-2"><strong>Research Area:</strong> AI, Machine Learning, Image Processing</p></div></div>
+                <div class="card bg-white rounded-2xl shadow-xl p-6 flex flex-col sm:flex-row items-center space-y-4 sm:space-y-0 sm:space-x-4"><img src="anand.jpg" alt="Anand Raj" class="rounded-full object-cover w-20 h-20 border-4 border-blue-500"><div class="text-center sm:text-left"><h3 class="text-lg font-bold text-gray-900">Mr. Anand raj</h3><p class="text-sm italic text-gray-500">Director</p><p class="text-sm text-gray-600 mt-2">B.Tech in CSE, AUS</p><p class="text-xs text-gray-500 mt-2"><strong>Research Area:</strong> ML, Deep Learning, Computer Vision</p></div></div>
+                <div class="card bg-white rounded-2xl shadow-xl p-6 flex flex-col sm:flex-row items-center space-y-4 sm:space-y-0 sm:space-x-4"><img src="biptu.jpg" alt="Biptu Dhar" class="rounded-full object-cover w-20 h-20 border-4 border-blue-500"><div class="text-center sm:text-left"><h3 class="text-lg font-bold text-gray-900">Mr. Biptu Dhar</h3><p class="text-sm italic text-gray-500">Core Team</p><p class="text-sm text-gray-600 mt-2">B.Tech in ETE, BVEC, Assam</p><p class="text-xs text-gray-500 mt-2"><strong>Research Area:</strong> Power Electronics, Power Systems, Autocad</p></div></div>
+                <div class="card bg-white rounded-2xl shadow-xl p-6 flex flex-col sm:flex-row items-center space-y-4 sm:space-y-0 sm:space-x-4"><img src="kishore.jpg" alt="Kishore Namasudra" class="rounded-full object-cover w-20 h-20 border-4 border-blue-500"><div class="text-center sm:text-left"><h3 class="text-lg font-bold text-gray-900">Mr. Kishore Namasudra</h3><p class="text-sm italic text-gray-500">Core Team</p><p class="text-sm text-gray-600 mt-2">Diploma in Mechanical Engineering, Silchar Polytechnic</p><p class="text-xs text-gray-500 mt-2"><strong>Research Area:</strong> Electrical Machines</p></div></div>
+                <div class="card bg-white rounded-2xl shadow-xl p-6 flex flex-col sm:flex-row items-center space-y-4 sm:space-y-0 sm:space-x-4"><img src="ashish.jpg" alt="Ashish Kumar Das" class="rounded-full object-cover w-20 h-20 border-4 border-blue-500"><div class="text-center sm:text-left"><h3 class="text-lg font-bold text-gray-900">Mr. Ashish Kumar Das</h3><p class="text-sm italic text-gray-500">Core Team</p><p class="text-sm text-gray-600 mt-2">B.Sc. (Hons.) in Mathematics, G.C. College</p><p class="text-xs text-gray-500 mt-2"><strong>Research Area:</strong> Software Engineering</p></div></div>
             </div>
         </section>
 
         <section class="container mt-16" id="contact">
             <h2 class="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">Contact Us</h2>
-            <div class="flex flex-col md:flex-row gap-8 mt-8">
-                <div class="bg-blue-950 text-white p-8 rounded-2xl shadow-lg w-full md:max-w-sm"><h3 class="text-2xl font-bold mb-6 text-white">Contact Details</h3><div class="space-y-6"><div class="flex items-start space-x-4"><div class="bg-blue-700 p-3 rounded-full flex-shrink-0"><svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" /></svg></div><div><p class="text-gray-400 text-sm">Email</p><p class="mt-1 font-semibold text-sm break-words">gopalelectronicslabs@gmail.com</p></div></div><div class="flex items-start space-x-4"><div class="bg-blue-700 p-3 rounded-full flex-shrink-0"><svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" /></svg></div><div><p class="text-gray-400 text-sm">Phone</p><p class="mt-1 font-semibold text-sm">+91 6002129253</p></div></div></div><div class="mt-8 pt-8 border-t border-gray-700"><h3 class="text-2xl font-bold mb-4">Office Address</h3><p class="mb-4 text-gray-300 text-sm leading-relaxed"><strong>R&D Center</strong><br>Gopal Electronics Pvt. Ltd.,<br>barjalenga grant,barjalenga <br>Dist. Cachar, Assam 788117<br><a href="https://maps.app.goo.gl/a6KZ71a8mJ9Gj9136" target="_blank" class="text-blue-400 hover:underline">View on Google Maps</a></p><p class="text-gray-300 text-sm leading-relaxed"><strong>Registered Office</strong><br>Borjalenga mahabirchara road, MP9M+VJ5<br>Bor Jalenga Grant, Dist Cachar, 788117<br><a href="https://maps.app.goo.gl/a6KZ71a8mJ9Gj9136" target="_blank" class="text-blue-400 hover:underline">View on Google Maps</a></p></div></div>
+            
+            <div class="mt-8 mb-6 overflow-hidden bg-red-100 border-l-4 border-red-500 rounded-r-lg">
+                <div class="scrolling-container py-3">
+                    <div class="scrolling-text text-red-700 font-bold text-lg" id="marquee-content">
+                        ⚠️ ALERT: Currently our website message features are not working. Please Call or WhatsApp us directly at +91 6002129253 for immediate assistance. ⚠️
+                    </div>
+                </div>
+            </div>
+
+            <div class="flex flex-col md:flex-row gap-8 mt-4">
+                <div class="bg-blue-950 text-white p-8 rounded-2xl shadow-lg w-full md:max-w-sm"><h3 class="text-2xl font-bold mb-6 text-white">Contact Details</h3><div class="space-y-6"><div class="flex items-start space-x-4"><div class="bg-blue-700 p-3 rounded-full flex-shrink-0"><svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg></div><div><p class="text-gray-400 text-sm">Email</p><p class="mt-1 font-semibold text-sm break-words">gopalelectronicslabs@gmail.com</p></div></div><div class="flex items-start space-x-4"><div class="bg-blue-700 p-3 rounded-full flex-shrink-0"><svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"></path></svg></div><div><p class="text-gray-400 text-sm">Phone</p><p class="mt-1 font-semibold text-sm">+91 6002129253</p></div></div></div><div class="mt-8 pt-8 border-t border-gray-700"><h3 class="text-2xl font-bold mb-4">Office Address</h3><p class="mb-4 text-gray-300 text-sm leading-relaxed"><strong>R&D Center</strong><br>Gopal Electronics Pvt. Ltd.,<br>barjalenga grant,barjalenga <br>Dist. Cachar, Assam 788117<br><a href="https://maps.app.goo.gl/a6KZ71a8mJ9Gj9136" target="_blank" class="text-blue-400 hover:underline">View on Google Maps</a></p><p class="text-gray-300 text-sm leading-relaxed"><strong>Registered Office</strong><br>Borjalenga mahabirchara road, MP9M+VJ5<br>Bor Jalenga Grant, Dist Cachar, 788117<br><a href="https://maps.app.goo.gl/a6KZ71a8mJ9Gj9136" target="_blank" class="text-blue-400 hover:underline">View on Google Maps</a></p></div></div>
                 <div id="message-us" class="contact-form p-8 bg-white rounded-2xl shadow-lg w-full">
                     <h3 class="text-2xl font-bold text-gray-900 mb-6">Send us a message</h3>
                     <form id="contact-form">
                         <div class="space-y-4">
-                            <input type="text" id="name" name="name" placeholder="Enter Your Name" class="w-full p-3 bg-gray-100 text-black rounded-lg placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500" required>
-                            <input type="email" id="email" name="email" placeholder="Enter Your Email" class="w-full p-3 bg-gray-100 text-black rounded-lg placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500" required>
-                            <input type="text" id="subject" name="subject" placeholder="Enter Your Subject" class="w-full p-3 bg-gray-100 text-black rounded-lg placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500" required>
-                            <textarea id="message" name="message" rows="4" placeholder="Enter Your Message" class="w-full p-3 bg-gray-100 text-black rounded-lg placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none" required></textarea>
+                            <input type="text" id="name" name="name" placeholder="Enter Your Name" class="w-full p-3 bg-gray-100 text-black rounded-lg placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500" required="">
+                            <input type="email" id="email" name="email" placeholder="Enter Your Email" class="w-full p-3 bg-gray-100 text-black rounded-lg placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500" required="">
+                            <input type="text" id="subject" name="subject" placeholder="Enter Your Subject" class="w-full p-3 bg-gray-100 text-black rounded-lg placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500" required="">
+                            <textarea id="message" name="message" rows="4" placeholder="Enter Your Message" class="w-full p-3 bg-gray-100 text-black rounded-lg placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none" required=""></textarea>
                             <div class="flex flex-col sm:flex-row sm:space-x-4 space-y-4 sm:space-y-0 items-center">
-                                <div id="captcha-question" class="w-full sm:w-1/2 p-3 bg-gray-200 text-gray-800 rounded-lg text-center font-bold"></div>
+                                <div id="captcha-question" class="w-full sm:w-1/2 p-3 bg-gray-200 text-gray-800 rounded-lg text-center font-bold">5 + 2 = ?</div>
                                 <div class="w-full sm:w-1/2">
-                                    <input type="text" id="captcha-answer" name="captcha" placeholder="Captcha Answer" class="w-full p-3 bg-gray-100 text-black rounded-lg placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500" required>
+                                    <input type="text" id="captcha-answer" name="captcha" placeholder="Captcha Answer" class="w-full p-3 bg-gray-100 text-black rounded-lg placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500" required="">
                                 </div>
                             </div>
                         </div>
                         <button type="submit" id="submit-button" class="w-full p-3 bg-blue-600 text-white font-bold rounded-lg hover:bg-blue-700 transition duration-200 flex items-center justify-center mt-6">
                             Send Message
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 ml-2" viewBox="0 0 20 20" fill="currentColor"><path d="M10.894 2.553a1 1 0 00-1.788 0l-7 14a1 1 0 001.342 1.342L10 15.464l5.564 2.93a1 1 0 001.342-1.342l-7-14z" /></svg>
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 ml-2" viewBox="0 0 20 20" fill="currentColor"><path d="M10.894 2.553a1 1 0 00-1.788 0l-7 14a1 1 0 001.342 1.342L10 15.464l5.564 2.93a1 1 0 001.342-1.342l-7-14z"></path></svg>
                         </button>
                     </form>
                 </div>
@@ -413,7 +589,11 @@
 
     <footer class="bg-blue-900 text-white py-8 px-4">
         <div class="container flex justify-between items-center">
-            <button id="policy-btn-all" class="text-sm text-slate-300 hover:text-white transition bg-transparent border-none">Website Policies</button>
+            <div>
+                <button id="policy-btn-all" class="text-sm text-slate-300 hover:text-white transition bg-transparent border-none">Website Policies</button>
+                <span class="mx-2 text-slate-500">|</span>
+                <button onclick="openAdminModal()" class="text-sm text-slate-400 hover:text-white transition bg-transparent border-none">Admin Login</button>
+            </div>
             <div class="text-center">
                 <p class="text-sm">© 2025 Gopal Electronics Pvt. Ltd. All Rights Reserved.</p>
             </div>
@@ -425,294 +605,379 @@
 
     <script>
     document.addEventListener('DOMContentLoaded', () => {
+        // --- VARIABLES TO TRACK EDITING STATE ---
+        let currentEditingNotice = null; // Stores the DOM element currently being edited
+        let currentEditingProject = null; // Stores the DOM element currently being edited
+
+        // --- EXISTING DATA & CONFIG ---
         const policyData = {
             en: {
-                all: {
-                    title: "Website Policies",
-                },
-                disclaimer: {
-                    title: "Disclaimer",
-                    content: "This website is designed, developed, and maintained by Gopal Electronics Pvt. Ltd. Though all efforts have been made to ensure the accuracy of the content on this website, it should not be construed as a statement of law or used for any legal purposes. Gopal Electronics Pvt. Ltd. accepts no responsibility in relation to the accuracy, completeness, or usefulness of the contents. Users are advised to verify any information and to obtain appropriate professional advice before acting on the information provided. In no event will Gopal Electronics Pvt. Ltd. be liable for any expense, loss, or damage, including indirect or consequential loss or damage, whatsoever arising from the use of this website. Links to other websites included here are provided for public convenience only. Gopal Electronics Pvt. Ltd. is not responsible for the contents or reliability of linked websites and does not necessarily endorse the views expressed within them. These terms and conditions shall be governed by and construed in accordance with Indian Laws. Any dispute arising under these terms shall be subject to the exclusive jurisdiction of the courts of India."
-                },
-                linking: {
-                    title: "Linking Policy",
-                    content: "<strong>Links to other websites from our website:</strong> At many places on this website, you may find links to other websites or portals. These links have been placed for your convenience. Gopal Electronics Pvt. Ltd. is not responsible for the contents and reliability of the linked websites and does not necessarily endorse the views expressed in them. The mere presence of the link should not be assumed as an endorsement of any kind. We cannot guarantee that these links will work all the time and have no control over the availability of linked pages.<br><br><strong>Links to our website from other websites:</strong> We welcome you to link directly to the information hosted on our website. However, we do not permit our pages to be loaded into frames on your site. The pages belonging to our website must load into a newly opened browser window of the user."
-                },
-                privacy: {
-                    title: "Privacy Policy",
-                    content: "This website does not automatically capture any specific personal information from you (like name, phone number, or e-mail address) that allows us to identify you individually. You can visit this site without revealing any personal information. However, should you choose to provide information through our contact form, it will only be used for the purpose of responding to your inquiry. Your information will not be shared with any third party, except when required by a law enforcement agency. This site does not use cookies.<br><br><em>Note: The use of the term “Personal Information” in this privacy statement refers to any information from which your identity is apparent or can be reasonably ascertained.</em>"
-                },
-                copyright: {
-                    title: "Copyright Policy",
-                    content: "The contents of this website may not be reproduced partially or fully without due permission from Gopal Electronics Pvt. Ltd. If permission is granted, the source must be appropriately acknowledged. The contents of this website cannot be used in any misleading or objectionable context."
-                },
-                accessibility: {
-                    title: "Accessibility Statement",
-                    content: "We are committed to ensuring that this website is accessible to all users, irrespective of the device, technology, or ability. It has been built with the aim of providing maximum accessibility and usability to its visitors. We have put in our best efforts to ensure that all information on this website is accessible. For example, a user with a visual disability can access this website using assistive technologies, such as screen readers. This website is compatible with various screen readers. This website includes the following accessibility features: Font Size Controls, High Contrast Mode, and a 'Skip to Main Content' link for keyboard users."
-                }
+                all: { title: "Website Policies" },
+                disclaimer: { title: "Disclaimer", content: "This website is designed, developed, and maintained by Gopal Electronics Pvt. Ltd. Though all efforts have been made to ensure the accuracy of the content on this website, it should not be construed as a statement of law or used for any legal purposes. Gopal Electronics Pvt. Ltd. accepts no responsibility in relation to the accuracy, completeness, or usefulness of the contents. Users are advised to verify any information and to obtain appropriate professional advice before acting on the information provided. In no event will Gopal Electronics Pvt. Ltd. be liable for any expense, loss, or damage, including indirect or consequential loss or damage, whatsoever arising from the use of this website. Links to other websites included here are provided for public convenience only. Gopal Electronics Pvt. Ltd. is not responsible for the contents or reliability of linked websites and does not necessarily endorse the views expressed within them. These terms and conditions shall be governed by and construed in accordance with Indian Laws. Any dispute arising under these terms shall be subject to the exclusive jurisdiction of the courts of India." },
+                linking: { title: "Linking Policy", content: "<strong>Links to other websites from our website:</strong> At many places on this website, you may find links to other websites or portals. These links have been placed for your convenience. Gopal Electronics Pvt. Ltd. is not responsible for the contents and reliability of the linked websites and does not necessarily endorse the views expressed in them. The mere presence of the link should not be assumed as an endorsement of any kind. We cannot guarantee that these links will work all the time and have no control over the availability of linked pages.<br><br><strong>Links to our website from other websites:</strong> We welcome you to link directly to the information hosted on our website. However, we do not permit our pages to be loaded into frames on your site. The pages belonging to our website must load into a newly opened browser window of the user." },
+                privacy: { title: "Privacy Policy", content: "This website does not automatically capture any specific personal information from you (like name, phone number, or e-mail address) that allows us to identify you individually. You can visit this site without revealing any personal information. However, should you choose to provide information through our contact form, it will only be used for the purpose of responding to your inquiry. Your information will not be shared with any third party, except when required by a law enforcement agency. This site does not use cookies.<br><br><em>Note: The use of the term “Personal Information” in this privacy statement refers to any information from which your identity is apparent or can be reasonably ascertained.</em>" },
+                copyright: { title: "Copyright Policy", content: "The contents of this website may not be reproduced partially or fully without due permission from Gopal Electronics Pvt. Ltd. If permission is granted, the source must be appropriately acknowledged. The contents of this website cannot be used in any misleading or objectionable context." },
+                accessibility: { title: "Accessibility Statement", content: "We are committed to ensuring that this website is accessible to all users, irrespective of the device, technology, or ability. It has been built with the aim of providing maximum accessibility and usability to its visitors. We have put in our best efforts to ensure that all information on this website is accessible. For example, a user with a visual disability can access this website using assistive technologies, such as screen readers. This website is compatible with various screen readers. This website includes the following accessibility features: Font Size Controls." }
             }
         };
 
         const productData = {
-            transformers: {
-                title: "Transformers",
-                details: [
-                    "Power & Distribution",
-                    "Single & Three-Phase",
-                    "Step-Up & Step-Down",
-                    "Instrument (CT, PT, CT-PT)",
-                    "Isolation & Autotransformers",
-                    "Audio & Pulse",
-                    "Welding & High-Frequency",
-                    "Ferrite Core & Center Tapped",
-                    "Star-Delta & HV Testing"
-                ]
-            },
-            powerConversion: {
-                title: "Power Conversion & Control",
-                details: [
-                    "Voltage Converters",
-                    "Motor Drivers",
-                    "Single-Phase Magnetic Contactors",
-                    "Three-Phase Magnetic Contactors",
-                    "Voltage Stabilizers"
-                ]
-            },
-            specializedEquipment: {
-                title: "Specialized Equipment",
-                details: [
-                    "Welding Machines",
-                    "Custom-build Lead Acid Batteries",
-                    "Constant-Current Battery Chargers (Industrial)",
-                    "Constant-Current Battery Chargers (Automobiles)"
-                ]
-            },
-            electricalInfrastructure: {
-                title: "Electrical Infrastructure",
-                details: [
-                    "High-Tension (HT) Breakers",
-                    "Low-Tension (LT) Panels",
-                    "Distribution Boards (MCBs)",
-                    "Cable Trays & Raceways",
-                    "Lightning Protection Systems",
-                    "Earthing Materials"
-                ]
-            }
+            transformers: { title: "Transformers", details: ["Power & Distribution", "Single & Three-Phase", "Step-Up & Step-Down", "Instrument (CT, PT, CT-PT)", "Isolation & Autotransformers", "Audio & Pulse", "Welding & High-Frequency", "Ferrite Core & Center Tapped", "Star-Delta & HV Testing"] },
+            powerConversion: { title: "Power Conversion & Control", details: ["Voltage Converters", "Motor Drivers", "Single-Phase Magnetic Contactors", "Three-Phase Magnetic Contactors", "Voltage Stabilizers"] },
+            specializedEquipment: { title: "Specialized Equipment", details: ["Welding Machines", "Custom-build Lead Acid Batteries", "Constant-Current Battery Chargers (Industrial)", "Constant-Current Battery Chargers (Automobiles)"] },
+            electricalInfrastructure: { title: "Electrical Infrastructure", details: ["High-Tension (HT) Breakers", "Low-Tension (LT) Panels", "Distribution Boards (MCBs)", "Cable Trays & Raceways", "Lightning Protection Systems", "Earthing Materials"] }
         };
 
+        // --- FONT SIZE CONTROLS ---
         const htmlEl = document.documentElement;
-        const bodyEl = document.body;
-        const fontIncBtn = document.getElementById('font-inc');
-        const fontDecBtn = document.getElementById('font-dec');
-        const fontResetBtn = document.getElementById('font-reset');
-        const defaultFontSize = 16; 
-
+        const defaultFontSize = 16;
         const changeFontSize = (amount) => {
             let currentSize = parseFloat(window.getComputedStyle(htmlEl).fontSize);
             htmlEl.style.fontSize = `${currentSize + amount}px`;
         };
+        document.getElementById('font-inc').addEventListener('click', () => changeFontSize(1));
+        document.getElementById('font-dec').addEventListener('click', () => changeFontSize(-1));
+        document.getElementById('font-reset').addEventListener('click', () => { htmlEl.style.fontSize = `${defaultFontSize}px`; });
 
-        fontIncBtn.addEventListener('click', () => changeFontSize(1));
-        fontDecBtn.addEventListener('click', () => changeFontSize(-1));
-        fontResetBtn.addEventListener('click', () => {
-            htmlEl.style.fontSize = `${defaultFontSize}px`;
-        });
-        
+        // --- MODAL LOGIC (Policies, Products, Messages) ---
+        window.closeModal = (modalId) => { document.getElementById(modalId).style.display = 'none'; };
+
         const policyModal = document.getElementById('policy-modal');
         const policyContent = document.getElementById('policy-modal-content');
-        const policyBtnAll = document.getElementById('policy-btn-all');
-
-        const openPolicyModal = () => {
-            let content = '';
-            const policyOrder = ['disclaimer', 'linking', 'privacy', 'copyright', 'accessibility'];
-            content = policyOrder.map(key => {
+        document.getElementById('policy-btn-all').addEventListener('click', (e) => {
+            e.preventDefault();
+            let content = ['disclaimer', 'linking', 'privacy', 'copyright', 'accessibility'].map(key => {
                 const item = policyData.en[key];
                 return `<div class="mb-6"><h3 class="text-2xl font-bold text-blue-800 mb-4">${item.title}</h3><p class="text-gray-600">${item.content}</p></div>`;
             }).join('');
-            
             policyContent.innerHTML = content;
             policyModal.style.display = 'flex';
-        };
-
-        policyBtnAll.addEventListener('click', (e) => {
-            e.preventDefault();
-            openPolicyModal();
         });
 
-        window.closeModal = (modalId) => {
-            document.getElementById(modalId).style.display = 'none';
-        };
-        
         const productModal = document.getElementById('product-details-modal');
-        const productModalTitle = document.getElementById('product-modal-title');
-        const productModalDetails = document.getElementById('product-modal-details');
-        const productCards = document.querySelectorAll('.product-card');
-
-        productCards.forEach(card => {
+        document.querySelectorAll('.product-card').forEach(card => {
             card.addEventListener('click', () => {
-                const key = card.dataset.productKey;
-                const data = productData[key];
-
+                const data = productData[card.dataset.productKey];
                 if (data) {
-                    productModalTitle.innerText = data.title;
-                    productModalDetails.innerHTML = '';
-                    const ul = document.createElement('ul');
-                    ul.className = 'list-disc list-inside space-y-2';
-                    data.details.forEach(itemText => {
-                        const li = document.createElement('li');
-                        li.innerText = itemText;
-                        ul.appendChild(li);
-                    });
-                    productModalDetails.appendChild(ul);
+                    document.getElementById('product-modal-title').innerText = data.title;
+                    document.getElementById('product-modal-details').innerHTML = `<ul class="list-disc list-inside space-y-2">${data.details.map(i => `<li>${i}</li>`).join('')}</ul>`;
                     productModal.style.display = 'flex';
                 }
             });
         });
 
-        let correctCaptchaAnswer;
-
-        function generateCaptcha() {
-            const num1 = Math.floor(Math.random() * 10) + 1;
-            const num2 = Math.floor(Math.random() * 10) + 1;
-            correctCaptchaAnswer = num1 + num2;
-            document.getElementById('captcha-question').innerText = `${num1} + ${num2} = ?`;
-        }
-
-        function showModal(message, isSuccess) {
+        window.showModal = function(message, isSuccess) {
             const modal = document.getElementById('message-modal');
             const modalMessage = document.getElementById('modal-message');
             const modalIcon = document.getElementById('modal-icon');
             modalMessage.innerText = message;
-            if (isSuccess) {
-                modalIcon.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16 mx-auto text-green-500" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" /></svg>`;
-                modalMessage.classList.add('modal-success');
-                modalMessage.classList.remove('modal-error');
-            } else {
-                modalIcon.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16 mx-auto text-red-500" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd" /></svg>`;
-                modalMessage.classList.add('modal-error');
-                modalMessage.classList.remove('modal-success');
-            }
+            modalIcon.innerHTML = isSuccess 
+                ? `<svg class="h-16 w-16 mx-auto text-green-500" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" /></svg>`
+                : `<svg class="h-16 w-16 mx-auto text-red-500" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd" /></svg>`;
+            modalMessage.className = isSuccess ? 'text-lg font-semibold mb-4 modal-success' : 'text-lg font-semibold mb-4 modal-error';
             modal.style.display = 'flex';
-        }
-
-        const mobileMenuBtn = document.getElementById('mobile-menu-btn');
-        const closeMenuBtn = document.getElementById('close-menu-btn');
-        const mobileMenuOverlay = document.getElementById('mobile-menu-overlay');
-
-        function openMobileMenu() {
-            mobileMenuOverlay.classList.remove('-translate-x-full');
-        }
-
-        function closeMobileMenu() {
-            mobileMenuOverlay.classList.add('-translate-x-full');
-        }
-
-        mobileMenuBtn.addEventListener('click', openMobileMenu);
-        closeMenuBtn.addEventListener('click', closeMobileMenu);
-
-        generateCaptcha();
-
-        const observerOptions = {
-            threshold: 0.5
         };
-        const createObserver = (handler) => new IntersectionObserver((entries, observer) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    handler(entry.target);
-                    observer.unobserve(entry.target);
-                }
-            });
-        }, observerOptions);
 
-        const form = document.getElementById('contact-form');
-        form.addEventListener('submit', function(event) {
+        // --- CAPTCHA & FORM ---
+        let correctCaptchaAnswer;
+        function generateCaptcha() {
+            const n1 = Math.floor(Math.random() * 10) + 1, n2 = Math.floor(Math.random() * 10) + 1;
+            correctCaptchaAnswer = n1 + n2;
+            document.getElementById('captcha-question').innerText = `${n1} + ${n2} = ?`;
+        }
+        generateCaptcha();
+        
+        document.getElementById('contact-form').addEventListener('submit', function(event) {
             event.preventDefault();
-            const userAnswer = parseInt(document.getElementById('captcha-answer').value, 10);
-            if (userAnswer !== correctCaptchaAnswer) {
-                showModal('Incorrect CAPTCHA answer. Please try again.', false);
-                generateCaptcha();
-                return;
+            if (parseInt(document.getElementById('captcha-answer').value, 10) !== correctCaptchaAnswer) {
+                showModal('Incorrect CAPTCHA answer.', false); generateCaptcha(); return;
             }
-
-            const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyd_P906GzHqGqK28RUo0dR7KtDE7BSApeI6KF1zs1HSgObed8q65SaBkA7Zn-cFyZf/exec';
-
-            if (SCRIPT_URL === 'PASTE_YOUR_GOOGLE_SCRIPT_URL_HERE') {
-                showModal('Form is not configured. Please paste the script URL.', false);
-                return;
-            }
-
-            const submitButton = document.getElementById('submit-button');
-            submitButton.disabled = true;
-            submitButton.textContent = 'Sending...';
-
-            const formData = new FormData(form);
-            const data = {};
-            formData.forEach((value, key) => (data[key] = value));
-
-            fetch(SCRIPT_URL, {
-                    method: 'POST',
-                    mode: 'no-cors',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify(data)
-                })
-                .then(() => {
-                    showModal('Message sent successfully! Thank you.', true);
-                    form.reset();
-                })
-                .catch(error => {
-                    showModal('Oops! There was a problem submitting your form.', false);
-                    console.error('Error:', error);
-                })
-                .finally(() => {
-                    generateCaptcha();
-                    submitButton.disabled = false;
-                    submitButton.innerHTML = `Send Message <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 ml-2" viewBox="0 0 20 20" fill="currentColor"><path d="M10.894 2.553a1 1 0 00-1.788 0l-7 14a1 1 0 001.342 1.342L10 15.464l5.564 2.93a1 1 0 001.342-1.342l-7-14z" /></svg>`;
-                });
+            showModal('Message form is currently disabled. Please call us directly.', false);
         });
 
-        const visionMissionCard = document.getElementById('vision-mission-card');
-        const handleHighlight = (el) => el.classList.add('highlight-active');
-        createObserver(handleHighlight).observe(visionMissionCard);
-
-        const welcomeSection = document.getElementById('welcome-section');
-        const handleTechSymbols = (el) => {
-            const symbols = [
-                '∫', 'Σ', 'π', '√', 'E=mc²', 'a²+b²', '∞', 'Δ', 'μ', '∑ F=ma', 'x(t)', 'x[n]', 'δ(t)', 'u(t)', 'e^(jωt)', 'H(jω)', '|H(f)|', '∠θ', 'V=IR', 'I=C dV/dt', 'V=L di/dt', 'f_c = 1/(2πRC)', 'β', 'gm', 'V_BE', 'Ic = β Ib', '0', '1', '⊕', '·', '+', '¬', 'CLK', 'FF', 'Qn+1 = D', 'MUX', '↑', '↓', '⎍', 'T', 'f = 1/T', 'PWM', 'D = Ton/T', 'Ton', 'Toff', 'IP', 'TCP', 'UDP', 'OSI', 'LAN', 'WAN', 'MAN', 'Pkt', 'ACK', 'NAK', '↔', '∥', '⟲', 'PC', 'SP', 'HL', 'DE', 'BC', 'A', 'IN', 'OUT', 'NOP', 'HLT', 'CALL', 'RET', 'RST', 'MOV', 'ADD', 'SUB', 'ANA', 'H₂O', 'CO₂', 'NaCl', 'HCl', 'CH₄', 'C₆H₁₂O₆', 'Δ', 'pH', '→', '⇌', '↑', '↓', 'Zener', 'LED', 'PN', 'Id = Is(e^(Vd/ηVT) - 1)', 'BJT', 'FET', 'MOSFET', 'Vth', 'gm = ΔId/ΔVgs', 'rπ', 'λ'
-            ];
-            const symbolInterval = setInterval(() => {
-                const symbol = document.createElement('div');
-                symbol.classList.add('tech-symbol');
-                symbol.innerHTML = symbols[Math.floor(Math.random() * symbols.length)];
-                symbol.style.left = Math.random() * 100 + 'vw';
-                symbol.style.animationDuration = Math.random() * 5 + 7 + 's';
-                symbol.style.fontSize = Math.random() * 1.5 + 1 + 'rem';
-                document.body.appendChild(symbol);
-                setTimeout(() => {
-                    symbol.remove();
-                }, 12000);
+        // --- VISUAL EFFECTS ---
+        const createObserver = (handler) => new IntersectionObserver((entries, obs) => {
+            entries.forEach(e => { if(e.isIntersecting) { handler(e.target); obs.unobserve(e.target); }});
+        }, { threshold: 0.5 });
+        
+        createObserver((el) => el.classList.add('highlight-active')).observe(document.getElementById('vision-mission-card'));
+        
+        // Tech Symbols Rain
+        createObserver(() => {
+            const syms = ['∫', 'Σ', 'π', '√', 'E=mc²', 'a²+b²', '∞'];
+            const interval = setInterval(() => {
+                const s = document.createElement('div');
+                s.className = 'tech-symbol';
+                s.innerText = syms[Math.floor(Math.random()*syms.length)];
+                s.style.left = Math.random()*100 + 'vw';
+                s.style.animationDuration = (Math.random()*5+7)+'s';
+                s.style.fontSize = (Math.random()*1.5+1)+'rem';
+                document.body.appendChild(s);
+                setTimeout(() => s.remove(), 12000);
             }, 400);
-            setTimeout(() => clearInterval(symbolInterval), 12000);
+            setTimeout(() => clearInterval(interval), 12000);
+        }).observe(document.getElementById('welcome-section'));
+
+        // Mobile Menu
+        const menuOverlay = document.getElementById('mobile-menu-overlay');
+        window.openMobileMenu = () => menuOverlay.classList.remove('-translate-x-full');
+        window.closeMobileMenu = () => menuOverlay.classList.add('-translate-x-full');
+        document.getElementById('mobile-menu-btn').addEventListener('click', openMobileMenu);
+        document.getElementById('close-menu-btn').addEventListener('click', closeMobileMenu);
+
+
+        /* =========================================
+           ADMIN SYSTEM LOGIC (EDIT & UPDATE ADDED)
+           ========================================= */
+        
+        window.openAdminModal = function() { document.getElementById('admin-login-modal').style.display = 'flex'; };
+
+        window.attemptAdminLogin = function() {
+            if(document.getElementById('admin-password-input').value === "admin123") {
+                document.getElementById('admin-login-modal').style.display = 'none';
+                document.getElementById('admin-dashboard').classList.add('active');
+                document.getElementById('admin-marquee-input').value = document.getElementById('marquee-content').innerText.trim();
+                enableAdminFeatures();
+            } else { alert("Incorrect Password!"); }
         };
-        createObserver(handleTechSymbols).observe(welcomeSection);
 
-        const servicesHeading = document.getElementById('services-heading');
-        const turbulence = document.querySelector('#water-vibrate-filter feTurbulence');
-        const handleWaterEffect = (el) => {
-            el.style.filter = 'url(#water-vibrate-filter)';
-            let seed = 0;
+        window.enableAdminFeatures = function() {
+            // Add Admin controls to Projects
+            document.querySelectorAll('#downloads-grid > div').forEach(card => {
+                if(!card.querySelector('.admin-del-btn')) addAdminControlsToProject(card);
+            });
+            // Add Admin controls to Notices
+            document.querySelectorAll('#notice-board-list > li').forEach(item => {
+                if(!item.querySelector('.admin-del-btn')) addAdminControlsToNotice(item);
+            });
+        };
 
-            function animateTurbulence() {
-                seed += 0.02;
-                turbulence.setAttribute('seed', seed);
-                requestAnimationFrame(animateTurbulence);
+        window.addAdminControlsToProject = function(element) {
+            element.classList.add('relative-group');
+            
+            // Delete Button
+            const delBtn = document.createElement('button');
+            delBtn.innerHTML = 'X';
+            delBtn.className = 'admin-del-btn';
+            delBtn.title = 'Delete';
+            delBtn.onclick = function() { if(confirm("Delete this project?")) element.remove(); };
+            
+            // Edit Button
+            const editBtn = document.createElement('button');
+            editBtn.innerHTML = '✎'; // Pencil Icon
+            editBtn.className = 'admin-edit-btn';
+            editBtn.title = 'Edit';
+            editBtn.onclick = function() { loadProjectForEdit(element); };
+
+            element.appendChild(delBtn);
+            element.appendChild(editBtn);
+        };
+
+        window.addAdminControlsToNotice = function(element) {
+            element.classList.add('relative-group');
+            
+            const delBtn = document.createElement('button');
+            delBtn.innerHTML = 'X';
+            delBtn.className = 'admin-del-btn';
+            delBtn.onclick = function() { if(confirm("Delete this notice?")) element.remove(); };
+
+            const editBtn = document.createElement('button');
+            editBtn.innerHTML = '✎';
+            editBtn.className = 'admin-edit-btn';
+            editBtn.onclick = function() { loadNoticeForEdit(element); };
+
+            element.appendChild(delBtn);
+            element.appendChild(editBtn);
+        };
+
+        window.closeAdminDashboard = function() {
+            document.getElementById('admin-dashboard').classList.remove('active');
+            // Reset editing states on close
+            currentEditingNotice = null;
+            currentEditingProject = null;
+            resetProjectForm();
+            resetNoticeForm();
+        };
+
+        window.updateMarquee = function() {
+            document.getElementById('marquee-content').innerText = document.getElementById('admin-marquee-input').value;
+            alert("Banner updated!");
+        };
+
+        /* --- NOTICE BOARD LOGIC --- */
+        window.loadNoticeForEdit = function(element) {
+            currentEditingNotice = element; // Set global flag
+            
+            // Extract data from HTML
+            const date = element.querySelector('p:nth-child(1)').innerText;
+            const text = element.querySelector('p:nth-child(2)').innerText;
+
+            // Fill Form
+            document.getElementById('admin-notice-date').value = date;
+            document.getElementById('admin-notice-text').value = text;
+            
+            // Change Button Text
+            const btn = document.querySelector('button[onclick="addNotice()"]');
+            btn.innerText = "Update Notice";
+            btn.classList.replace('bg-purple-100', 'bg-amber-100');
+            btn.classList.replace('text-purple-700', 'text-amber-700');
+        };
+
+        window.resetNoticeForm = function() {
+            document.getElementById('admin-notice-date').value = "";
+            document.getElementById('admin-notice-text').value = "";
+            const btn = document.querySelector('button[onclick="addNotice()"]');
+            btn.innerText = "Add Notice";
+            btn.classList.replace('bg-amber-100', 'bg-purple-100');
+            btn.classList.replace('text-amber-700', 'text-purple-700');
+            currentEditingNotice = null;
+        };
+
+        window.addNotice = function() {
+            const date = document.getElementById('admin-notice-date').value;
+            const text = document.getElementById('admin-notice-text').value;
+            if(!date || !text) { alert("Date and Text are required!"); return; }
+
+            if (currentEditingNotice) {
+                // UPDATE MODE
+                currentEditingNotice.querySelector('p:nth-child(1)').innerText = date;
+                currentEditingNotice.querySelector('p:nth-child(2)').innerText = text;
+                alert("Notice Updated!");
+                resetNoticeForm();
+            } else {
+                // ADD MODE
+                const li = document.createElement('li');
+                li.className = "border-b pb-2 relative-group";
+                li.innerHTML = `<p class="text-sm text-gray-500">${date}</p><p class="text-gray-700 font-medium">${text}</p>`;
+                addAdminControlsToNotice(li);
+                document.getElementById('notice-board-list').prepend(li);
+                document.getElementById('admin-notice-date').value = "";
+                document.getElementById('admin-notice-text').value = "";
+                alert("Notice Added!");
             }
-            animateTurbulence();
         };
-        createObserver(handleWaterEffect).observe(servicesHeading);
+
+        /* --- PROJECT LOGIC --- */
+        window.loadProjectForEdit = function(element) {
+            currentEditingProject = element; // Set global flag
+
+            // Extract Data
+            const title = element.querySelector('h3').innerText;
+            const desc = element.querySelector('p').innerText;
+            const link = element.querySelector('a').getAttribute('href');
+            const statusSpan = element.querySelector('span');
+            const status = statusSpan.innerText;
+
+            // Fill Form
+            document.getElementById('admin-proj-title').value = title;
+            document.getElementById('admin-proj-desc').value = desc;
+            document.getElementById('admin-proj-link').value = link;
+            document.getElementById('admin-proj-status').value = status;
+
+            // Change Button Text
+            const btn = document.querySelector('button[onclick="addProject()"]');
+            btn.innerText = "Update Project";
+            btn.classList.replace('bg-green-100', 'bg-amber-100');
+            btn.classList.replace('text-green-700', 'text-amber-700');
+        };
+
+        window.resetProjectForm = function() {
+            document.getElementById('admin-proj-title').value = "";
+            document.getElementById('admin-proj-desc').value = "";
+            document.getElementById('admin-proj-link').value = "";
+            const btn = document.querySelector('button[onclick="addProject()"]');
+            btn.innerText = "Add Project";
+            btn.classList.replace('bg-amber-100', 'bg-green-100');
+            btn.classList.replace('text-amber-700', 'text-green-700');
+            currentEditingProject = null;
+        };
+
+        window.addProject = function() {
+            const title = document.getElementById('admin-proj-title').value;
+            const desc = document.getElementById('admin-proj-desc').value;
+            const link = document.getElementById('admin-proj-link').value;
+            const status = document.getElementById('admin-proj-status').value;
+
+            if(!title || !link) { alert("Title and Link are required!"); return; }
+
+            const colorClass = status === 'Available' ? 'bg-green-100 text-green-800' : 'bg-yellow-100 text-yellow-800';
+            const btnClass = status === 'Available' ? 'text-blue-600 hover:text-blue-800' : 'text-gray-400 cursor-not-allowed';
+            const icon = `<svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" /></svg>`;
+
+            if (currentEditingProject) {
+                // UPDATE MODE: Update inner HTML of the existing card
+                currentEditingProject.innerHTML = `
+                    <div class="flex items-start justify-between">
+                        <div class="bg-blue-100 p-3 rounded-lg text-blue-600">${icon}</div>
+                        <span class="${colorClass} text-xs font-semibold px-2.5 py-0.5 rounded">${status}</span>
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-900 mt-4">${title}</h3>
+                    <p class="text-sm text-gray-600 mt-2">${desc}</p>
+                    <a href="${link}" class="mt-4 inline-flex items-center ${btnClass} font-medium">
+                        Download File <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
+                    </a>
+                `;
+                // Re-attach buttons since we wiped innerHTML
+                addAdminControlsToProject(currentEditingProject);
+                alert("Project Updated!");
+                resetProjectForm();
+            } else {
+                // ADD MODE
+                const cardDiv = document.createElement('div');
+                cardDiv.className = "bg-white p-6 rounded-2xl shadow-lg border border-gray-200 hover:shadow-xl transition relative-group";
+                cardDiv.innerHTML = `
+                    <div class="flex items-start justify-between">
+                        <div class="bg-blue-100 p-3 rounded-lg text-blue-600">${icon}</div>
+                        <span class="${colorClass} text-xs font-semibold px-2.5 py-0.5 rounded">${status}</span>
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-900 mt-4">${title}</h3>
+                    <p class="text-sm text-gray-600 mt-2">${desc}</p>
+                    <a href="${link}" class="mt-4 inline-flex items-center ${btnClass} font-medium">
+                        Download File <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
+                    </a>
+                `;
+                addAdminControlsToProject(cardDiv);
+                document.getElementById('downloads-grid').appendChild(cardDiv);
+                document.getElementById('admin-proj-title').value = "";
+                document.getElementById('admin-proj-desc').value = "";
+                document.getElementById('admin-proj-link').value = "";
+                alert("Project Added!");
+            }
+        };
+
+        window.saveAndDownload = function() {
+            const dashboard = document.getElementById('admin-dashboard');
+            const wasActive = dashboard.classList.contains('active');
+
+            // Cleanup before save
+            dashboard.classList.remove('active');
+            document.getElementById('admin-login-modal').style.display = 'none';
+            document.getElementById('admin-password-input').value = '';
+            
+            // Remove admin buttons for the "Clean" save
+            document.querySelectorAll('.admin-del-btn, .admin-edit-btn').forEach(btn => btn.remove());
+
+            const htmlContent = "<!DOCTYPE html>\n" + document.documentElement.outerHTML;
+
+            // Restore admin view
+            if (wasActive) {
+                dashboard.classList.add('active');
+                enableAdminFeatures(); 
+            }
+
+            const blob = new Blob([htmlContent], {type: 'text/html'});
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'index.html';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+            
+            alert("File saved! Upload 'index.html' to your host.");
+        };
     });
     </script>
-
 </body>
 </html>
